@@ -4,6 +4,7 @@ node_modules/
 **/.venv/
 .venv/
 venv/
+venv_mac/
 env/
 **/__pycache__/
 __pycache__/
