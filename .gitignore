@@ -1,0 +1,25 @@
+# Dependencies
+**/node_modules/
+node_modules/
+**/.venv/
+.venv/
+venv/
+env/
+**/__pycache__/
+__pycache__/
+*.pyc
+.DS_Store
+
+# IDEs
+.vscode/
+.idea/
+
+# Database
+*.db
+*.sqlite3
+
+# Build outputs
+**/dist/
+**/build/
+**/.next/
+.next/

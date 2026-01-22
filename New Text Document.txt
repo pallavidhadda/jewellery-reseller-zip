@@ -1,0 +1,30 @@
+Page	URL
+Landing Page	http://localhost:3000
+Demo Store	http://localhost:3000/store/sparkle-jewels
+Login	http://localhost:3000/login
+Dashboard	http://localhost:3000/dashboard
+API Docs	http://localhost:8000/api/docs
+Demo Credentials
+Role	Email	Password
+Reseller	
+demo@mystore.com
+demo123
+Admin	
+admin@jewelryplatform.com
+admin123
+Manufacturer	
+manufacturer@jewelrycrafts.com
+mfr123
+What Was Built
+Backend (FastAPI)
+JWT authentication
+Product catalog & selection APIs
+Order processing & routing
+Commission & payout system
+Admin dashboard endpoints
+Frontend (Next.js)
+Stunning landing page with hero & features
+Reseller dashboard with stats
+Product selection & pricing interface
+Dynamic storefronts with branding
+Shopping cart & checkout flow

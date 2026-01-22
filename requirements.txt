@@ -1,0 +1,4 @@
+# Jewelry Reseller Platform - Root Requirements
+# To install backend dependencies, run: pip install -r backend/requirements.txt
+
+-r backend/requirements.txt
