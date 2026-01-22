@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Diamond, Mail, Lock, ArrowRight, Loader2 } from 'lucide-react';
+import { Diamond, Mail, Lock, ArrowRight, Loader2, Gem } from 'lucide-react';
 import api from '@/lib/api';
 import { useAuthStore } from '@/lib/store';
 
@@ -49,40 +49,46 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center px-4 py-12">
-            {/* Background */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl" />
-                <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl" />
-            </div>
+        <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-bg-primary overflow-hidden relative">
+            {/* Background Patterns */}
+            <div className="absolute inset-0 z-0 opacity-[0.03]"
+                style={{ backgroundImage: 'url("/lib/patterns/geometric-jali.svg")', backgroundSize: '120px' }} />
 
-            <div className="w-full max-w-md relative">
+            <div className="absolute -top-24 -right-24 w-96 h-96 bg-jaipur-gold/20 rounded-full blur-3xl opacity-30" />
+            <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-jaipur-terra/20 rounded-full blur-3xl opacity-30" />
+
+            <div className="w-full max-w-md relative z-10 animate-fade-in">
                 {/* Logo */}
-                <Link href="/" className="flex items-center justify-center gap-2 mb-8">
-                    <Diamond className="w-10 h-10 text-purple-400" />
-                    <span className="font-display text-2xl font-bold gradient-text">JewelryHub</span>
+                <Link href="/" className="flex items-center justify-center gap-2 mb-8 group">
+                    <div className="w-12 h-12 rounded-full bg-jaipur-pink/30 flex items-center justify-center border border-jaipur-pink group-hover:border-jaipur-gold transition-colors shadow-lg">
+                        <Gem className="w-6 h-6 text-jaipur-burgundy" />
+                    </div>
                 </Link>
 
-                <div className="card">
-                    <h1 className="text-2xl font-bold text-center mb-2">Welcome Back</h1>
-                    <p className="text-white/60 text-center mb-8">Sign in to your account</p>
+                <div className="card bg-white shadow-xl border-border-medium/60 relative overflow-hidden backdrop-blur-xl">
+                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-jaipur"></div>
+
+                    <div className="text-center mb-8">
+                        <h1 className="font-display text-3xl font-medium text-text-primary mb-2">Welcome Back</h1>
+                        <p className="text-text-secondary">Sign in to manage your jewelry store</p>
+                    </div>
 
                     {error && (
-                        <div className="bg-red-500/20 border border-red-500/50 rounded-xl p-4 mb-6 text-red-300 text-sm">
-                            {error}
+                        <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6 flex items-center gap-2 text-red-700 text-sm">
+                            <span className="font-medium">Error:</span> {error}
                         </div>
                     )}
 
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div>
-                            <label className="input-label">Email</label>
-                            <div className="relative">
-                                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
+                            <label className="input-label">Email Address</label>
+                            <div className="relative group">
+                                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted group-focus-within:text-jaipur-peacock transition-colors" />
                                 <input
                                     type="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    className="input pl-12"
+                                    className="input pl-12 bg-bg-secondary focus:bg-white"
                                     placeholder="you@example.com"
                                     required
                                 />
@@ -91,13 +97,13 @@ export default function LoginPage() {
 
                         <div>
                             <label className="input-label">Password</label>
-                            <div className="relative">
-                                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
+                            <div className="relative group">
+                                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted group-focus-within:text-jaipur-peacock transition-colors" />
                                 <input
                                     type="password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    className="input pl-12"
+                                    className="input pl-12 bg-bg-secondary focus:bg-white"
                                     placeholder="••••••••"
                                     required
                                 />
@@ -105,11 +111,11 @@ export default function LoginPage() {
                         </div>
 
                         <div className="flex items-center justify-between text-sm">
-                            <label className="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" className="accent-purple-500" />
-                                <span className="text-white/60">Remember me</span>
+                            <label className="flex items-center gap-2 cursor-pointer group">
+                                <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-jaipur-peacock focus:ring-jaipur-peacock" />
+                                <span className="text-text-secondary group-hover:text-text-primary transition-colors">Remember me</span>
                             </label>
-                            <Link href="/forgot-password" className="text-purple-400 hover:text-purple-300">
+                            <Link href="/forgot-password" className="text-jaipur-peacock hover:text-jaipur-terra font-medium transition-colors">
                                 Forgot password?
                             </Link>
                         </div>
@@ -117,7 +123,7 @@ export default function LoginPage() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="btn-primary w-full flex items-center justify-center gap-2"
+                            className="btn-primary w-full flex items-center justify-center gap-2 shadow-gold"
                         >
                             {loading ? (
                                 <Loader2 className="w-5 h-5 animate-spin" />
@@ -130,19 +136,23 @@ export default function LoginPage() {
                         </button>
                     </form>
 
-                    <div className="mt-8 text-center text-sm text-white/60">
+                    <div className="mt-8 pt-6 border-t border-border-light text-center text-sm text-text-secondary">
                         Don't have an account?{' '}
-                        <Link href="/register" className="text-purple-400 hover:text-purple-300 font-medium">
+                        <Link href="/register" className="text-jaipur-peacock hover:text-jaipur-terra font-semibold transition-colors">
                             Sign up free
                         </Link>
                     </div>
                 </div>
 
                 {/* Demo credentials */}
-                <div className="mt-6 card bg-amber-500/10 border-amber-500/30">
-                    <p className="text-sm text-amber-300 text-center">
-                        <strong>Demo:</strong> demo@mystore.com / demo123
+                <div className="mt-6 p-4 rounded-xl bg-bg-secondary border border-jaipur-gold/20 text-center animate-slide-up" style={{ animationDelay: '0.1s' }}>
+                    <p className="text-sm text-text-secondary">
+                        <span className="font-semibold text-jaipur-peacock">Demo Access:</span> demo@mystore.com / demo123
                     </p>
+                </div>
+
+                <div className="mt-8 text-center text-xs text-text-muted font-light">
+                    Protected by SSL encryption. Your data is secure.
                 </div>
             </div>
         </div>

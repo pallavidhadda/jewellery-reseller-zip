@@ -1,8 +1,0 @@
-streamlit>=1.30.0
-streamlit-antd-components>=0.3.2
-streamlit-extras>=0.7.0
-streamlit-lottie>=0.0.5
-sqlalchemy==2.0.25
-passlib[bcrypt]==1.7.4
-bcrypt==4.0.1
-python-slugify==8.0.1

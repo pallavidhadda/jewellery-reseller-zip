@@ -6,7 +6,7 @@ import Link from 'next/link';
 import {
     Diamond, LayoutDashboard, ShoppingBag, Package,
     CreditCard, Settings, LogOut, Menu, X, Store,
-    TrendingUp, DollarSign, ShoppingCart, Eye
+    TrendingUp, DollarSign, ShoppingCart, Eye, Gem
 } from 'lucide-react';
 import { useAuthStore } from '@/lib/store';
 import api from '@/lib/api';
@@ -64,25 +64,27 @@ export default function DashboardPage() {
     ];
 
     return (
-        <div className="min-h-screen flex">
+        <div className="min-h-screen flex bg-bg-primary">
             {/* Sidebar */}
-            <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-white/5 backdrop-blur-lg border-r border-white/10 transform transition-transform duration-300 lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+            <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-jaipur-burgundy text-white transform transition-transform duration-300 lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} shadow-2xl`}>
                 <div className="flex items-center gap-3 p-6 border-b border-white/10">
-                    <Diamond className="w-8 h-8 text-purple-400" />
-                    <span className="font-display text-xl font-bold">JewelryHub</span>
+                    <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center border border-white/20">
+                        <Gem className="w-5 h-5 text-jaipur-gold" />
+                    </div>
+                    <span className="font-display text-xl font-bold tracking-wide">JewelryHub</span>
                 </div>
 
-                <nav className="p-4 space-y-1">
+                <nav className="p-4 space-y-2">
                     {navItems.map((item) => (
                         <Link
                             key={item.href}
                             href={item.href}
-                            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${item.active
-                                    ? 'bg-purple-500/20 text-purple-300'
-                                    : 'text-white/60 hover:bg-white/5 hover:text-white'
+                            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${item.active
+                                ? 'bg-white text-jaipur-burgundy shadow-lg font-medium'
+                                : 'text-white/70 hover:bg-white/10 hover:text-white'
                                 }`}
                         >
-                            <item.icon className="w-5 h-5" />
+                            <item.icon className={`w-5 h-5 ${item.active ? 'text-jaipur-terra' : ''}`} />
                             {item.label}
                         </Link>
                     ))}
@@ -91,7 +93,7 @@ export default function DashboardPage() {
                 <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-white/10">
                     <button
                         onClick={handleLogout}
-                        className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-white/60 hover:bg-white/5 hover:text-white transition-colors"
+                        className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-white/70 hover:bg-white/10 hover:text-white transition-colors"
                     >
                         <LogOut className="w-5 h-5" />
                         Sign Out
@@ -102,26 +104,30 @@ export default function DashboardPage() {
             {/* Mobile overlay */}
             {sidebarOpen && (
                 <div
-                    className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+                    className="fixed inset-0 bg-black/50 z-40 lg:hidden backdrop-blur-sm"
                     onClick={() => setSidebarOpen(false)}
                 />
             )}
 
             {/* Main content */}
-            <main className="flex-1 lg:ml-64">
+            <main className="flex-1 lg:ml-64 relative">
+                {/* Background Pattern */}
+                <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none"
+                    style={{ backgroundImage: 'url("/lib/patterns/mandala-1.svg")', backgroundSize: '400px', backgroundPosition: 'center center' }} />
+
                 {/* Header */}
-                <header className="sticky top-0 z-30 glass border-b border-white/10 px-4 lg:px-8 py-4">
+                <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-border-light px-4 lg:px-8 py-4 shadow-sm">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-4">
                             <button
-                                className="lg:hidden text-white p-2"
+                                className="lg:hidden text-text-primary p-2 hover:bg-bg-secondary rounded-lg transition-colors"
                                 onClick={() => setSidebarOpen(!sidebarOpen)}
                             >
                                 {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                             </button>
                             <div>
-                                <h1 className="text-xl font-semibold">Dashboard</h1>
-                                <p className="text-sm text-white/50">Welcome back, {reseller?.business_name || 'Reseller'}</p>
+                                <h1 className="text-xl font-display font-semibold text-text-primary">Dashboard</h1>
+                                <p className="text-sm text-text-secondary">Welcome back, {reseller?.business_name || 'Reseller'}</p>
                             </div>
                         </div>
 
@@ -130,7 +136,7 @@ export default function DashboardPage() {
                                 <a
                                     href={`/store/${reseller.slug}`}
                                     target="_blank"
-                                    className="btn-secondary flex items-center gap-2 text-sm"
+                                    className="btn-secondary flex items-center gap-2 text-sm px-4 py-2 hover:bg-bg-secondary transition-colors"
                                 >
                                     <Eye className="w-4 h-4" />
                                     View Store
@@ -140,10 +146,10 @@ export default function DashboardPage() {
                     </div>
                 </header>
 
-                <div className="p-4 lg:p-8">
+                <div className="p-4 lg:p-8 relative z-10">
                     {loading ? (
                         <div className="flex items-center justify-center h-64">
-                            <div className="w-8 h-8 border-2 border-purple-500 border-t-transparent rounded-full animate-spin" />
+                            <div className="w-10 h-10 border-2 border-jaipur-terra border-t-transparent rounded-full animate-spin" />
                         </div>
                     ) : (
                         <>
@@ -154,35 +160,39 @@ export default function DashboardPage() {
                                         label: 'Total Revenue',
                                         value: `₹${(stats?.total_revenue || 0).toLocaleString()}`,
                                         icon: DollarSign,
-                                        color: 'purple'
+                                        color: 'jaipur-peacock',
+                                        bg: 'bg-jaipur-peacock/10'
                                     },
                                     {
                                         label: 'Total Orders',
                                         value: stats?.total_orders || 0,
                                         icon: ShoppingCart,
-                                        color: 'pink'
+                                        color: 'jaipur-burgundy',
+                                        bg: 'bg-jaipur-pink/30'
                                     },
                                     {
                                         label: 'Your Commission',
                                         value: `₹${(stats?.total_commission || 0).toLocaleString()}`,
                                         icon: TrendingUp,
-                                        color: 'amber'
+                                        color: 'jaipur-gold-dark',
+                                        bg: 'bg-jaipur-gold/20'
                                     },
                                     {
                                         label: 'Active Products',
                                         value: stats?.total_products || 0,
                                         icon: ShoppingBag,
-                                        color: 'emerald'
+                                        color: 'jaipur-terra',
+                                        bg: 'bg-jaipur-terra/10'
                                     },
                                 ].map((stat, i) => (
-                                    <div key={i} className="card">
+                                    <div key={i} className="card bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 border-t-2 border-transparent hover:border-jaipur-gold">
                                         <div className="flex items-start justify-between">
                                             <div>
-                                                <p className="text-sm text-white/50 mb-1">{stat.label}</p>
-                                                <p className="text-2xl font-bold">{stat.value}</p>
+                                                <p className="text-sm text-text-secondary mb-1 font-medium">{stat.label}</p>
+                                                <p className="text-2xl font-bold font-display text-text-primary">{stat.value}</p>
                                             </div>
-                                            <div className={`w-10 h-10 rounded-xl bg-${stat.color}-500/20 flex items-center justify-center`}>
-                                                <stat.icon className={`w-5 h-5 text-${stat.color}-400`} />
+                                            <div className={`w-10 h-10 rounded-xl ${stat.bg} flex items-center justify-center`}>
+                                                <stat.icon className={`w-5 h-5 text-${stat.color}`} />
                                             </div>
                                         </div>
                                     </div>
@@ -191,32 +201,40 @@ export default function DashboardPage() {
 
                             {/* This Month */}
                             <div className="grid lg:grid-cols-2 gap-6 mb-8">
-                                <div className="card">
-                                    <h3 className="font-semibold mb-4">This Month</h3>
+                                <div className="card bg-white shadow-lg border-border-light">
+                                    <h3 className="font-display font-semibold mb-4 text-text-primary flex items-center gap-2">
+                                        <TrendingUp className="w-5 h-5 text-jaipur-peacock" />
+                                        Performance This Month
+                                    </h3>
                                     <div className="space-y-4">
-                                        <div className="flex items-center justify-between py-3 border-b border-white/10">
-                                            <span className="text-white/60">Orders</span>
-                                            <span className="font-semibold">{stats?.orders_this_month || 0}</span>
+                                        <div className="flex items-center justify-between py-3 border-b border-border-light">
+                                            <span className="text-text-secondary">Orders</span>
+                                            <span className="font-semibold text-text-primary">{stats?.orders_this_month || 0}</span>
                                         </div>
-                                        <div className="flex items-center justify-between py-3 border-b border-white/10">
-                                            <span className="text-white/60">Revenue</span>
-                                            <span className="font-semibold">₹{(stats?.revenue_this_month || 0).toLocaleString()}</span>
+                                        <div className="flex items-center justify-between py-3 border-b border-border-light">
+                                            <span className="text-text-secondary">Revenue</span>
+                                            <span className="font-semibold text-text-primary">₹{(stats?.revenue_this_month || 0).toLocaleString()}</span>
                                         </div>
                                         <div className="flex items-center justify-between py-3">
-                                            <span className="text-white/60">Commission</span>
-                                            <span className="font-semibold text-purple-400">₹{(stats?.commission_this_month || 0).toLocaleString()}</span>
+                                            <span className="text-text-secondary">Commission</span>
+                                            <span className="font-semibold text-jaipur-peacock">₹{(stats?.commission_this_month || 0).toLocaleString()}</span>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div className="card">
-                                    <h3 className="font-semibold mb-4">Pending Payout</h3>
-                                    <div className="text-center py-8">
-                                        <p className="text-4xl font-bold gradient-text mb-2">
+                                <div className="card bg-white shadow-lg border-border-light relative overflow-hidden">
+                                    <div className="absolute -bottom-8 -right-8 w-32 h-32 bg-jaipur-gold/10 rounded-full blur-xl" />
+
+                                    <h3 className="font-display font-semibold mb-4 text-text-primary flex items-center gap-2">
+                                        <CreditCard className="w-5 h-5 text-jaipur-terra" />
+                                        Pending Payout
+                                    </h3>
+                                    <div className="text-center py-8 relative z-10">
+                                        <p className="text-4xl font-display font-bold text-jaipur-terra mb-2">
                                             ₹{(stats?.pending_payout || 0).toLocaleString()}
                                         </p>
-                                        <p className="text-white/50 text-sm mb-4">Available for withdrawal</p>
-                                        <Link href="/dashboard/payouts" className="btn-primary text-sm">
+                                        <p className="text-text-secondary text-sm mb-6">Available for withdrawal</p>
+                                        <Link href="/dashboard/payouts" className="btn-primary text-sm shadow-gold">
                                             Request Payout
                                         </Link>
                                     </div>
@@ -224,25 +242,36 @@ export default function DashboardPage() {
                             </div>
 
                             {/* Quick Actions */}
-                            <div className="card">
-                                <h3 className="font-semibold mb-4">Quick Actions</h3>
+                            <div className="card bg-white shadow-lg border-border-light">
+                                <h3 className="font-display font-semibold mb-4 text-text-primary">Quick Actions</h3>
                                 <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                                    <Link href="/dashboard/products" className="p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-colors text-center">
-                                        <ShoppingBag className="w-8 h-8 mx-auto mb-2 text-purple-400" />
-                                        <span className="text-sm">Add Products</span>
+                                    <Link href="/dashboard/products" className="p-4 rounded-xl bg-bg-secondary hover:bg-jaipur-pink/20 border border-transparent hover:border-jaipur-pink/50 transition-all text-center group">
+                                        <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mx-auto mb-3 shadow-md group-hover:scale-110 transition-transform">
+                                            <ShoppingBag className="w-5 h-5 text-jaipur-burgundy" />
+                                        </div>
+                                        <span className="text-sm font-medium text-text-primary block">Add Products</span>
                                     </Link>
-                                    <Link href="/dashboard/orders" className="p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-colors text-center">
-                                        <Package className="w-8 h-8 mx-auto mb-2 text-pink-400" />
-                                        <span className="text-sm">View Orders</span>
+
+                                    <Link href="/dashboard/orders" className="p-4 rounded-xl bg-bg-secondary hover:bg-jaipur-pink/20 border border-transparent hover:border-jaipur-pink/50 transition-all text-center group">
+                                        <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mx-auto mb-3 shadow-md group-hover:scale-110 transition-transform">
+                                            <Package className="w-5 h-5 text-jaipur-peacock" />
+                                        </div>
+                                        <span className="text-sm font-medium text-text-primary block">View Orders</span>
                                     </Link>
-                                    <Link href="/dashboard/settings" className="p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-colors text-center">
-                                        <Settings className="w-8 h-8 mx-auto mb-2 text-amber-400" />
-                                        <span className="text-sm">Store Settings</span>
+
+                                    <Link href="/dashboard/settings" className="p-4 rounded-xl bg-bg-secondary hover:bg-jaipur-pink/20 border border-transparent hover:border-jaipur-pink/50 transition-all text-center group">
+                                        <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mx-auto mb-3 shadow-md group-hover:scale-110 transition-transform">
+                                            <Settings className="w-5 h-5 text-jaipur-gold-dark" />
+                                        </div>
+                                        <span className="text-sm font-medium text-text-primary block">Store Settings</span>
                                     </Link>
+
                                     {reseller?.slug && (
-                                        <a href={`/store/${reseller.slug}`} target="_blank" className="p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-colors text-center">
-                                            <Store className="w-8 h-8 mx-auto mb-2 text-emerald-400" />
-                                            <span className="text-sm">Visit Store</span>
+                                        <a href={`/store/${reseller.slug}`} target="_blank" className="p-4 rounded-xl bg-bg-secondary hover:bg-jaipur-pink/20 border border-transparent hover:border-jaipur-pink/50 transition-all text-center group">
+                                            <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mx-auto mb-3 shadow-md group-hover:scale-110 transition-transform">
+                                                <Store className="w-5 h-5 text-jaipur-terra" />
+                                            </div>
+                                            <span className="text-sm font-medium text-text-primary block">Visit Store</span>
                                         </a>
                                     )}
                                 </div>
