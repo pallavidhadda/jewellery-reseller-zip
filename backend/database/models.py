@@ -139,9 +139,9 @@ class Product(Base):
     
     # Product Details
     sku = Column(String(100), unique=True, nullable=False)
-    category = Column(String(100), nullable=True)
+    category = Column(String(100), index=True, nullable=True)
     subcategory = Column(String(100), nullable=True)
-    material = Column(String(100), nullable=True)  # Gold, Silver, Diamond, etc.
+    material = Column(String(100), index=True, nullable=True)  # Gold, Silver, Diamond, etc.
     weight = Column(Float, nullable=True)  # in grams
     dimensions = Column(String(100), nullable=True)
     
@@ -173,16 +173,16 @@ class ResellerProduct(Base):
     __tablename__ = "reseller_products"
     
     id = Column(Integer, primary_key=True, index=True)
-    reseller_id = Column(Integer, ForeignKey("resellers.id"))
-    product_id = Column(Integer, ForeignKey("products.id"))
+    reseller_id = Column(Integer, ForeignKey("resellers.id"), index=True)
+    product_id = Column(Integer, ForeignKey("products.id"), index=True)
     
     # Custom Pricing
     retail_price = Column(Float, nullable=False)  # Reseller's selling price
     compare_at_price = Column(Float, nullable=True)  # Original price for showing discounts
     
     # Display Settings
-    is_active = Column(Boolean, default=True)
-    is_featured = Column(Boolean, default=False)
+    is_active = Column(Boolean, default=True, index=True)
+    is_featured = Column(Boolean, default=False, index=True)
     display_order = Column(Integer, default=0)
     
     # Custom Content (optional overrides)

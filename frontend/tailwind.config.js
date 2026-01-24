@@ -7,24 +7,27 @@ module.exports = {
     theme: {
         extend: {
             colors: {
-                // Jaipur Fusion Color Palette
+                // Jaipur Fusion Luxury Palette (Refined)
                 jaipur: {
-                    pink: '#F4C2C2',
-                    terra: '#D97757',
-                    sand: '#E8DCC4',
-                    peacock: '#0F7B8A',
-                    gold: '#C9A961',
-                    burgundy: '#8B2635',
+                    pink: '#FDF2F0', // Very light tint
+                    terra: '#A67C70', // Muted clay
+                    sand: '#F2EBE5', // Light neutral
+                    peacock: '#2A5A63', // Deep teal
+                    gold: '#C0A062', // Luxury gold
+                    burgundy: '#6B2D38', // Deep regal red
                 },
-                // Neutral palette
+                // Warm Neutral palette
                 neutral: {
-                    50: '#FAFAF8',
+                    50: '#FAFAF9',
                     100: '#F5F5F4',
-                    200: '#F0EBE6',
-                    300: '#E0D8D0',
-                    400: '#9B9490',
-                    500: '#6B6460',
-                    600: '#2C2C2C',
+                    200: '#E6E5E3',
+                    300: '#D6D3D0',
+                    400: '#A8A29E',
+                    500: '#78716C',
+                    600: '#57534E',
+                    700: '#44403C',
+                    800: '#292524',
+                    900: '#1C1917',
                 },
             },
             fontFamily: {
@@ -32,11 +35,10 @@ module.exports = {
                 display: ['Cormorant Garamond', 'serif'],
             },
             animation: {
-                'fade-in': 'fadeIn 0.5s ease-out',
-                'slide-up': 'slideUp 0.5s ease-out',
-                'slide-down': 'slideDown 0.3s ease-out',
-                'scale-in': 'scaleIn 0.3s ease-out',
-                'mandala': 'mandalaRotate 60s linear infinite',
+                'fade-in': 'fadeIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1)',
+                'slide-up': 'slideUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1)',
+                'slide-down': 'slideDown 0.4s cubic-bezier(0.2, 0.8, 0.2, 1)',
+                'mandala': 'mandalaRotate 120s linear infinite',
             },
             keyframes: {
                 fadeIn: {
@@ -51,25 +53,19 @@ module.exports = {
                     '0%': { opacity: '0', transform: 'translateY(-10px)' },
                     '100%': { opacity: '1', transform: 'translateY(0)' },
                 },
-                scaleIn: {
-                    '0%': { opacity: '0', transform: 'scale(0.95)' },
-                    '100%': { opacity: '1', transform: 'scale(1)' },
-                },
                 mandalaRotate: {
                     '0%': { transform: 'rotate(0deg)' },
                     '100%': { transform: 'rotate(360deg)' },
                 },
             },
             backgroundImage: {
-                'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-                'gradient-jaipur': 'linear-gradient(135deg, #D97757 0%, #C9A961 50%, #0F7B8A 100%)',
+                'gradient-jaipur': 'linear-gradient(135deg, #6B2D38 0%, #C0A062 100%)', // Burgundy to Gold
                 'pattern-mandala': 'url("/lib/patterns/mandala-1.svg")',
                 'pattern-jali': 'url("/lib/patterns/geometric-jali.svg")',
             },
             boxShadow: {
-                'gold': '0 0 20px rgba(201, 169, 97, 0.3), 0 0 40px rgba(201, 169, 97, 0.15)',
-                'terra': '0 0 20px rgba(217, 119, 87, 0.3), 0 0 40px rgba(217, 119, 87, 0.15)',
-                'peacock': '0 0 20px rgba(15, 123, 138, 0.3), 0 0 40px rgba(15, 123, 138, 0.15)',
+                'gold': '0 0 30px rgba(192, 160, 98, 0.15)',
+                'subtle': '0 0 30px rgba(0, 0, 0, 0.05)',
             },
         },
     },

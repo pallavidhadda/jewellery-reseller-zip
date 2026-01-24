@@ -3,24 +3,16 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import {
-    Diamond, Store, Palette, Globe,
-    ShoppingBag, Check, ArrowRight, ArrowLeft,
-    Loader2, Upload, Plus, Minus, Search
+    Diamond, Palette, Globe,
+    Check, ArrowRight,
+    Loader2, Upload, Minus, Gem, Sparkles, Building2, Phone, Info
 } from 'lucide-react';
 import api from '@/lib/api';
 import { useAuthStore } from '@/lib/store';
 
-interface Product {
-    id: number;
-    name: string;
-    base_price: number;
-    category: string;
-    primary_image: string;
-}
-
 export default function OnboardingPage() {
     const router = useRouter();
-    const { reseller, setReseller, user } = useAuthStore();
+    const { reseller, setReseller } = useAuthStore();
     const [step, setStep] = useState(1);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -31,16 +23,11 @@ export default function OnboardingPage() {
     const [phone, setPhone] = useState('');
 
     // Step 2: Branding
-    const [primaryColor, setPrimaryColor] = useState('#8B5CF6');
+    const [primaryColor, setPrimaryColor] = useState('#C0A062'); // Default luxury gold
     const [logoUrl, setLogoUrl] = useState('');
 
     // Step 3: Domain
     const [subdomain, setSubdomain] = useState('');
-
-    // Step 4: Products
-    const [catalogProducts, setCatalogProducts] = useState<Product[]>([]);
-    const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
-    const [priceInput, setPriceInput] = useState<{ [key: number]: string }>({});
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -52,23 +39,19 @@ export default function OnboardingPage() {
             setBusinessName(reseller.business_name || '');
             setDescription(reseller.description || '');
             setPhone(reseller.phone || '');
-            setPrimaryColor(reseller.primary_color || '#8B5CF6');
+            setPrimaryColor(reseller.primary_color || '#C0A062');
             setSubdomain(reseller.subdomain || reseller.slug || '');
         }
-        fetchCatalog();
     }, [reseller]);
 
-    const fetchCatalog = async () => {
-        try {
-            const data = await api.getCatalog();
-            setCatalogProducts(data as Product[]);
-        } catch (err) {
-            console.error('Failed to fetch catalog:', err);
-        }
+    const nextStep = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setStep(s => s + 1);
     };
-
-    const nextStep = () => setStep(s => s + 1);
-    const prevStep = () => setStep(s => s - 1);
+    const prevStep = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setStep(s => s - 1);
+    };
 
     const handleSaveProfile = async () => {
         setLoading(true);
@@ -127,78 +110,55 @@ export default function OnboardingPage() {
         try {
             const updated = await api.updateDomain({ subdomain });
             setReseller(updated as any);
-            nextStep();
-        } catch (err: any) {
-            setError(err.message || 'Failed to save domain');
-        } finally {
-            setLoading(false);
-        }
-    };
 
-    const handleAddProduct = async (product: Product) => {
-        const price = parseFloat(priceInput[product.id]);
-        if (isNaN(price) || price < product.base_price * 1.2) {
-            alert(`Price must be at least ₹${Math.ceil(product.base_price * 1.2)}`);
-            return;
-        }
-
-        try {
-            await api.addProduct(product.id, price);
-            setSelectedProducts([...selectedProducts, product.id]);
-        } catch (err: any) {
-            alert(err.message || 'Failed to add product');
-        }
-    };
-
-    const handleComplete = async () => {
-        if (selectedProducts.length === 0) {
-            setError('Please add at least one product to your store');
-            return;
-        }
-
-        setLoading(true);
-        setError('');
-        try {
+            // Publish Store automatically
             await api.publishStore();
-            router.push('/dashboard');
+
+            // Redirect to Products Dashboard to start curating
+            router.push('/dashboard/products');
         } catch (err: any) {
-            setError(err.message || 'Failed to publish store');
+            setError(err.message || 'Failed to secure URL');
         } finally {
             setLoading(false);
         }
     };
 
     const steps = [
-        { icon: Store, title: 'Profile' },
+        { icon: Building2, title: 'Profile' },
         { icon: Palette, title: 'Branding' },
         { icon: Globe, title: 'Domain' },
-        { icon: ShoppingBag, title: 'Products' },
     ];
 
     return (
-        <div className="min-h-screen bg-black text-white py-12 px-4">
-            <div className="max-w-4xl mx-auto">
+        <div className="min-h-screen bg-bg-secondary text-text-primary py-12 px-4 relative overflow-hidden font-body">
+            {/* Background Patterns */}
+            <div className="absolute inset-0 pointer-events-none opacity-[0.03] z-0"
+                style={{ backgroundImage: 'url("/lib/patterns/geometric-jali.svg")', backgroundSize: '150px' }} />
+
+            <div className="max-w-4xl mx-auto relative z-10">
                 {/* Header */}
                 <div className="text-center mb-12">
-                    <div className="flex items-center justify-center gap-2 mb-4">
-                        <Diamond className="w-10 h-10 text-purple-400" />
-                        <span className="font-display text-3xl font-bold gradient-text">JewelryHub</span>
+                    <div className="flex items-center justify-center gap-2 mb-6">
+                        <div className="w-12 h-12 rounded-full bg-jaipur-gold/10 flex items-center justify-center border border-jaipur-gold/20">
+                            <Gem className="w-6 h-6 text-jaipur-gold" />
+                        </div>
+                        <span className="font-display text-3xl font-semibold tracking-tight">JewelryHub</span>
                     </div>
-                    <h1 className="text-2xl font-bold mb-2">Welcome! Let's set up your store</h1>
-                    <p className="text-white/60">Follow these simple steps to start selling</p>
+                    <h1 className="text-3xl md:text-4xl font-display font-medium mb-3">Welcome to the inner circle</h1>
+                    <p className="text-text-secondary font-light max-w-md mx-auto">Set up your luxury boutique in a few simple steps</p>
                 </div>
 
                 {/* Progress Bar */}
-                <div className="flex items-center justify-between mb-12 relative">
-                    <div className="absolute top-5 left-0 right-0 h-px bg-white/10 -z-10" />
+                <div className="flex items-center justify-between mb-12 relative max-w-lg mx-auto">
+                    <div className="absolute top-5 left-0 right-0 h-[1px] bg-border-medium/50 -z-10" />
                     {steps.map((s, i) => (
-                        <div key={i} className="flex flex-col items-center gap-2 bg-black px-4">
-                            <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${step > i + 1 ? 'bg-emerald-500' :
-                                step === i + 1 ? 'bg-purple-500' : 'bg-white/10'
+                        <div key={i} className="flex flex-col items-center gap-3 bg-bg-secondary px-4 transition-all duration-500">
+                            <div className={`w-10 h-10 rounded-full flex items-center justify-center border transition-all duration-500 ${step > i + 1 ? 'bg-jaipur-burgundy border-jaipur-burgundy text-white' :
+                                step === i + 1 ? 'bg-white border-jaipur-gold text-jaipur-gold shadow-lg shadow-jaipur-gold/10' : 'bg-white border-border-medium text-text-muted opacity-50'
                                 }`}>
                                 {step > i + 1 ? <Check className="w-5 h-5" /> : <s.icon className="w-5 h-5" />}
                             </div>
-                            <span className={`text-xs ${step === i + 1 ? 'text-purple-400 font-bold' : 'text-white/40'}`}>
+                            <span className={`text-[10px] uppercase tracking-widest font-bold ${step === i + 1 ? 'text-jaipur-gold' : 'text-text-muted opacity-50'}`}>
                                 {s.title}
                             </span>
                         </div>
@@ -206,193 +166,160 @@ export default function OnboardingPage() {
                 </div>
 
                 {/* Step Content */}
-                <div className="card max-w-2xl mx-auto">
+                <div className="bg-white/70 backdrop-blur-xl border border-white/40 shadow-xl rounded-[2.5rem] p-8 md:p-12 max-w-2xl mx-auto transition-all duration-500 min-h-[500px] flex flex-col items-center justify-center">
                     {error && (
-                        <div className="bg-red-500/20 border border-red-500/50 rounded-xl p-4 mb-6 text-red-300 text-sm">
+                        <div className="w-full bg-red-50 border border-red-100 rounded-2xl p-4 mb-8 text-red-600 text-sm font-medium animate-slide-up flex items-center gap-2">
+                            <span className="w-1.5 h-1.5 rounded-full bg-red-600 shrink-0" />
                             {error}
                         </div>
                     )}
 
                     {step === 1 && (
-                        <div className="space-y-6">
-                            <h2 className="text-xl font-bold mb-6">Business Profile</h2>
+                        <div className="w-full space-y-8 animate-fade-in">
                             <div>
-                                <label className="input-label">Business Name</label>
-                                <input
-                                    type="text"
-                                    value={businessName}
-                                    onChange={e => setBusinessName(e.target.value)}
-                                    className="input"
-                                    placeholder="Enter your store name"
-                                />
+                                <h2 className="text-2xl font-display font-medium mb-2">Boutique Profile</h2>
+                                <p className="text-text-secondary text-sm font-light">Details that will represent your brand identity</p>
                             </div>
-                            <div>
-                                <label className="input-label">Description</label>
-                                <textarea
-                                    value={description}
-                                    onChange={e => setDescription(e.target.value)}
-                                    className="input min-h-[100px]"
-                                    placeholder="Tell customers about your store"
-                                />
+
+                            <div className="space-y-6">
+                                <div>
+                                    <label className="input-label">Boutique Name</label>
+                                    <input
+                                        type="text"
+                                        value={businessName}
+                                        onChange={e => setBusinessName(e.target.value)}
+                                        className="input h-[54px]"
+                                        placeholder="Enter your store name"
+                                    />
+                                </div>
+                                <div className="relative">
+                                    <label className="input-label">Short Description</label>
+                                    <textarea
+                                        value={description}
+                                        onChange={e => setDescription(e.target.value)}
+                                        className="input min-h-[120px] pt-4"
+                                        placeholder="A brief history or vision of your brand..."
+                                    />
+                                    <div className="absolute top-2 right-4 text-jaipur-gold/20">
+                                        <Info size={16} />
+                                    </div>
+                                </div>
+                                <div>
+                                    <label className="input-label">Concierge Phone (Optional)</label>
+                                    <div className="relative">
+                                        <Phone size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted" />
+                                        <input
+                                            type="tel"
+                                            value={phone}
+                                            onChange={e => setPhone(e.target.value)}
+                                            className="input h-[54px] pl-11"
+                                            placeholder="+91 98765 43210"
+                                        />
+                                    </div>
+                                </div>
                             </div>
-                            <div>
-                                <label className="input-label">Phone (Optional)</label>
-                                <input
-                                    type="tel"
-                                    value={phone}
-                                    onChange={e => setPhone(e.target.value)}
-                                    className="input"
-                                    placeholder="+91 98765 43210"
-                                />
-                            </div>
+
                             <button
                                 onClick={handleSaveProfile}
                                 disabled={loading || !businessName || !description}
-                                className="btn-primary w-full flex items-center justify-center gap-2"
+                                className="btn-primary w-full h-[58px] flex items-center justify-center gap-3"
                             >
-                                {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <>Continue <ArrowRight className="w-5 h-5" /></>}
+                                {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <>Next <ArrowRight className="w-5 h-5" /></>}
                             </button>
                         </div>
                     )}
 
                     {step === 2 && (
-                        <div className="space-y-6">
-                            <h2 className="text-xl font-bold mb-6">Brand Identity</h2>
+                        <div className="w-full space-y-8 animate-fade-in">
                             <div>
-                                <label className="input-label">Store Theme Color</label>
-                                <div className="flex items-center gap-4">
-                                    <input
-                                        type="color"
-                                        value={primaryColor}
-                                        onChange={e => setPrimaryColor(e.target.value)}
-                                        className="w-16 h-16 rounded-xl bg-transparent cursor-pointer"
-                                    />
-                                    <div>
-                                        <p className="font-medium">{primaryColor}</p>
-                                        <p className="text-sm text-white/40">Choose a primary color for your store</p>
+                                <h2 className="text-2xl font-display font-medium mb-2">Visual Heritage</h2>
+                                <p className="text-text-secondary text-sm font-light">Luxury is in the details. Upload your crest and colors.</p>
+                            </div>
+
+                            <div className="space-y-8">
+                                <div className="flex flex-col items-center justify-center p-8 bg-bg-secondary rounded-3xl border border-border-light relative group">
+                                    {logoUrl ? (
+                                        <div className="relative">
+                                            <img src={api.getMediaUrl(logoUrl)} alt="Logo" className="w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg" />
+                                            <button
+                                                onClick={() => setLogoUrl('')}
+                                                className="absolute -top-1 -right-1 w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-black transition-colors"
+                                            >
+                                                <Minus className="w-4 h-4" />
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <label className="w-32 h-32 rounded-full border-2 border-dashed border-jaipur-gold/30 flex flex-col items-center justify-center hover:border-jaipur-gold transition-colors cursor-pointer bg-white/50">
+                                            <input type="file" accept="image/*" onChange={handleLogoUpload} className="hidden" />
+                                            <Upload className="w-8 h-8 text-jaipur-gold/40 mb-2" />
+                                            <span className="text-[10px] font-bold uppercase tracking-widest text-jaipur-gold/60">Upload Crest</span>
+                                        </label>
+                                    )}
+                                    <p className="text-[10px] text-text-muted uppercase tracking-[0.2em] font-medium mt-6">Recommended: Square PNG/JPG</p>
+                                </div>
+
+                                <div>
+                                    <label className="input-label">Theme Accent</label>
+                                    <div className="flex items-center gap-6 p-4 bg-bg-secondary rounded-2xl border border-border-light">
+                                        <input
+                                            type="color"
+                                            value={primaryColor}
+                                            onChange={e => setPrimaryColor(e.target.value)}
+                                            className="w-12 h-12 rounded-xl bg-transparent cursor-pointer overflow-hidden border-none"
+                                        />
+                                        <div>
+                                            <p className="font-display text-lg font-medium">{primaryColor.toUpperCase()}</p>
+                                            <p className="text-xs text-text-muted font-light">Custom tone for your boutique elements</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div>
-                                <label className="input-label">Store Logo</label>
-                                <div className="space-y-4">
-                                    <div className="flex items-center gap-4">
-                                        {logoUrl ? (
-                                            <div className="relative group">
-                                                <img src={api.getMediaUrl(logoUrl)} alt="Logo" className="w-20 h-20 rounded-xl object-contain bg-white/5 border border-white/10" />
-                                                <button
-                                                    onClick={() => setLogoUrl('')}
-                                                    className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                                                >
-                                                    <Minus className="w-4 h-4" />
-                                                </button>
-                                            </div>
-                                        ) : (
-                                            <label className="flex-1 border-2 border-dashed border-white/10 rounded-2xl p-8 text-center hover:border-purple-500/50 transition-colors cursor-pointer block">
-                                                <input
-                                                    type="file"
-                                                    accept="image/*"
-                                                    onChange={handleLogoUpload}
-                                                    className="hidden"
-                                                />
-                                                <Upload className="w-8 h-8 mx-auto mb-2 text-white/20" />
-                                                <p className="text-sm text-white/60">Upload your logo</p>
-                                                <p className="text-xs text-white/40 mt-1">Recommended size: 512x512px</p>
-                                            </label>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
+
                             <div className="flex gap-4">
-                                <button onClick={prevStep} className="btn-secondary flex-1">Back</button>
-                                <button onClick={handleSaveBranding} className="btn-primary flex-[2] flex items-center justify-center gap-2">
-                                    {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <>Next <ArrowRight className="w-5 h-5" /></>}
+                                <button onClick={prevStep} className="btn-ghost flex-1 h-[58px]">Back</button>
+                                <button onClick={handleSaveBranding} className="btn-primary flex-[2] h-[58px] flex items-center justify-center gap-3">
+                                    {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <>Save Branding <ArrowRight className="w-5 h-5" /></>}
                                 </button>
                             </div>
                         </div>
                     )}
 
                     {step === 3 && (
-                        <div className="space-y-6">
-                            <h2 className="text-xl font-bold mb-6">Choose Your URL</h2>
+                        <div className="w-full space-y-8 animate-fade-in">
                             <div>
-                                <label className="input-label">Subdomain</label>
-                                <div className="flex items-center gap-2">
-                                    <div className="relative flex-1">
-                                        <input
-                                            type="text"
-                                            value={subdomain}
-                                            onChange={e => setSubdomain(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ''))}
-                                            className="input"
-                                            placeholder="my-awesome-store"
-                                        />
-                                    </div>
-                                    <span className="text-white/40 font-medium">.jewelryhub.in</span>
-                                </div>
-                                <p className="text-xs text-white/40 mt-2">
-                                    Customers will visit this link to buy from your store.
-                                </p>
-                            </div>
-                            <div className="flex gap-4">
-                                <button onClick={prevStep} className="btn-secondary flex-1">Back</button>
-                                <button onClick={handleSaveDomain} className="btn-primary flex-[2] flex items-center justify-center gap-2">
-                                    {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <>Next <ArrowRight className="w-5 h-5" /></>}
-                                </button>
-                            </div>
-                        </div>
-                    )}
-
-                    {step === 4 && (
-                        <div className="space-y-6">
-                            <div className="flex items-center justify-between mb-4">
-                                <h2 className="text-xl font-bold">Add Your First Products</h2>
-                                <span className="bg-purple-500/20 text-purple-400 px-3 py-1 rounded-full text-xs">
-                                    {selectedProducts.length} selected
-                                </span>
+                                <h2 className="text-2xl font-display font-medium mb-2">Exclusive Address</h2>
+                                <p className="text-text-secondary text-sm font-light">Secure your digital store location</p>
                             </div>
 
-                            <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
-                                {catalogProducts.map(product => (
-                                    <div key={product.id} className="flex gap-4 p-4 bg-white/5 rounded-xl border border-white/10">
-                                        <img src={product.primary_image} alt={product.name} className="w-20 h-20 object-cover rounded-lg" />
-                                        <div className="flex-1">
-                                            <h3 className="font-semibold text-sm line-clamp-1">{product.name}</h3>
-                                            <p className="text-xs text-white/40 mb-2">{product.category}</p>
-                                            <p className="text-xs mb-1">Base Price: ₹{product.base_price.toLocaleString()}</p>
-                                            <div className="flex items-center gap-2">
-                                                <input
-                                                    type="number"
-                                                    placeholder={`Min: ₹${Math.ceil(product.base_price * 1.2)}`}
-                                                    value={priceInput[product.id] || ''}
-                                                    onChange={e => setPriceInput({ ...priceInput, [product.id]: e.target.value })}
-                                                    className="input py-1.5 text-xs w-32"
-                                                />
-                                                {selectedProducts.includes(product.id) ? (
-                                                    <div className="bg-emerald-500/20 text-emerald-400 px-3 py-1.5 rounded-lg text-xs font-bold border border-emerald-500/50 flex items-center gap-1">
-                                                        <Check className="w-3 h-3" /> Added
-                                                    </div>
-                                                ) : (
-                                                    <button
-                                                        onClick={() => handleAddProduct(product)}
-                                                        className="btn-primary py-1.5 text-xs px-4"
-                                                    >
-                                                        Add
-                                                    </button>
-                                                )}
-                                            </div>
+                            <div className="space-y-6">
+                                <div>
+                                    <label className="input-label">Digital Subdomain</label>
+                                    <div className="flex items-center gap-2">
+                                        <div className="relative flex-1">
+                                            <Globe className="absolute left-4 top-1/2 -translate-y-1/2 text-jaipur-gold/30 w-4 h-4" />
+                                            <input
+                                                type="text"
+                                                value={subdomain}
+                                                onChange={e => setSubdomain(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ''))}
+                                                className="input h-[54px] pl-11"
+                                                placeholder="boutique-slug"
+                                            />
                                         </div>
+                                        <span className="text-text-muted font-display text-lg">.jewelryhub.in</span>
                                     </div>
-                                ))}
+                                    <div className="mt-4 p-4 bg-bg-accent/50 rounded-xl border border-jaipur-gold/10 flex items-center gap-2">
+                                        <Sparkles className="w-4 h-4 text-jaipur-gold" />
+                                        <p className="text-xs text-text-secondary font-light">
+                                            This will be the permanent link shared with your clients.
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
 
-                            <div className="flex gap-4 pt-4">
-                                <button onClick={prevStep} className="btn-secondary flex-1">Back</button>
-                                <button
-                                    onClick={handleComplete}
-                                    disabled={loading || selectedProducts.length === 0}
-                                    className="btn-primary flex-[2] flex items-center justify-center gap-2"
-                                >
-                                    {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Launch My Store!'}
+                            <div className="flex gap-4">
+                                <button onClick={prevStep} className="btn-ghost flex-1 h-[58px]">Back</button>
+                                <button onClick={handleSaveDomain} className="btn-primary flex-[2] h-[58px] flex items-center justify-center gap-3 shadow-gold">
+                                    {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <>Launch Boutique <Sparkles className="w-5 h-5" /></>}
                                 </button>
                             </div>
                         </div>

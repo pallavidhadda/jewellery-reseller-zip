@@ -7,7 +7,7 @@ import {
     Diamond, LayoutDashboard, ShoppingBag, Package,
     CreditCard, Settings, LogOut, Menu, X, DollarSign,
     TrendingUp, ArrowDownToLine, History, Check, AlertCircle,
-    Loader2
+    Loader2, Gem
 } from 'lucide-react';
 import { useAuthStore } from '@/lib/store';
 import api from '@/lib/api';
@@ -55,7 +55,9 @@ export default function PayoutsPage() {
                 api.getPayouts()
             ]);
             setBalance(balanceData as PayoutBalance);
-            setHistory(historyData as PayoutRecord[]);
+            // Safe data handling
+            const historyList = Array.isArray(historyData) ? historyData : (historyData as any).items || [];
+            setHistory(historyList as PayoutRecord[]);
         } catch (err) {
             console.error('Failed to load payout data:', err);
         } finally {
@@ -90,16 +92,16 @@ export default function PayoutsPage() {
 
     const getStatusColor = (status: string) => {
         switch (status.toLowerCase()) {
-            case 'pending': return 'bg-amber-500/20 text-amber-400';
-            case 'processing': return 'bg-blue-500/20 text-blue-400';
-            case 'completed': return 'bg-emerald-500/20 text-emerald-400';
-            case 'failed': return 'bg-red-500/20 text-red-400';
-            default: return 'bg-white/10 text-white/60';
+            case 'pending': return 'bg-amber-500/10 text-amber-600 border border-amber-200';
+            case 'processing': return 'bg-blue-500/10 text-blue-600 border border-blue-200';
+            case 'completed': return 'bg-emerald-500/10 text-emerald-600 border border-emerald-200';
+            case 'failed': return 'bg-red-500/10 text-red-600 border border-red-200';
+            default: return 'bg-bg-secondary text-text-muted border border-border-light';
         }
     };
 
     const navItems = [
-        { icon: LayoutDashboard, label: 'Dashboard', href: '/dashboard' },
+        { icon: LayoutDashboard, label: 'Overview', href: '/dashboard' },
         { icon: ShoppingBag, label: 'Products', href: '/dashboard/products' },
         { icon: Package, label: 'Orders', href: '/dashboard/orders' },
         { icon: CreditCard, label: 'Payouts', href: '/dashboard/payouts', active: true },
@@ -107,47 +109,70 @@ export default function PayoutsPage() {
     ];
 
     return (
-        <div className="min-h-screen flex">
-            {/* Sidebar (same as dashboard) */}
-            <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-white/5 backdrop-blur-lg border-r border-white/10 transform transition-transform duration-300 lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-                <div className="flex items-center gap-3 p-6 border-b border-white/10">
-                    <Diamond className="w-8 h-8 text-purple-400" />
-                    <span className="font-display text-xl font-bold">JewelryHub</span>
+        <div className="min-h-screen flex bg-bg-secondary font-body">
+            {/* Sidebar */}
+            <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-jaipur-burgundy text-white transform transition-transform duration-300 lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} shadow-2xl`}>
+                <div className="flex items-center gap-3 p-6 border-b border-white/5">
+                    <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10">
+                        <Gem className="w-5 h-5 text-jaipur-gold" />
+                    </div>
+                    <div>
+                        <span className="font-display text-xl font-medium tracking-tight">JewelryHub</span>
+                        <span className="block text-[10px] text-jaipur-gold/70 uppercase tracking-[0.2em] font-bold">Reseller</span>
+                    </div>
                 </div>
+
                 <nav className="p-4 space-y-1">
                     {navItems.map((item) => (
-                        <Link key={item.href} href={item.href} className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${item.active ? 'bg-purple-500/20 text-purple-300' : 'text-white/60 hover:bg-white/5 hover:text-white'}`}>
-                            <item.icon className="w-5 h-5" />
-                            {item.label}
+                        <Link
+                            key={item.href}
+                            href={item.href}
+                            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-500 ${item.active
+                                ? 'bg-white/10 text-white border border-white/10 shadow-lg'
+                                : 'text-white/50 hover:bg-white/5 hover:text-white'
+                                }`}
+                        >
+                            <item.icon className={`w-4 h-4 ${item.active ? 'text-jaipur-gold' : ''}`} />
+                            <span className="text-sm font-medium tracking-wide">{item.label}</span>
                         </Link>
                     ))}
                 </nav>
-                <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-white/10">
-                    <button onClick={handleLogout} className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-white/60 hover:bg-white/5 hover:text-white transition-colors">
-                        <LogOut className="w-5 h-5" />
-                        Sign Out
+
+                <div className="absolute bottom-6 left-0 right-0 p-4">
+                    <button
+                        onClick={handleLogout}
+                        className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-white/40 hover:bg-white/5 hover:text-white transition-all duration-300"
+                    >
+                        <LogOut className="w-4 h-4" />
+                        <span className="text-sm font-medium">Sign Out</span>
                     </button>
                 </div>
             </aside>
 
-            <main className="flex-1 lg:ml-64">
-                <header className="sticky top-0 z-30 glass border-b border-white/10 px-4 lg:px-8 py-4">
+            {/* Mobile overlay */}
+            {sidebarOpen && (
+                <div className="fixed inset-0 bg-black/40 z-40 lg:hidden backdrop-blur-sm" onClick={() => setSidebarOpen(false)} />
+            )}
+
+            {/* Main content */}
+            <main className="flex-1 lg:ml-64 relative min-h-screen">
+                <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-border-light px-6 lg:px-10 py-5">
                     <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-4">
-                            <button className="lg:hidden text-white p-2" onClick={() => setSidebarOpen(!sidebarOpen)}>
+                        <div className="flex items-center gap-6">
+                            <button className="lg:hidden text-text-primary p-2 hover:bg-bg-secondary rounded-lg transition-colors" onClick={() => setSidebarOpen(!sidebarOpen)}>
                                 {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                             </button>
                             <div>
-                                <h1 className="text-xl font-semibold">Payouts</h1>
-                                <p className="text-sm text-white/50">Manage your earnings and withdrawals</p>
+                                <h1 className="text-2xl font-display font-medium text-text-primary tracking-tight">Payouts</h1>
+                                <p className="text-xs text-text-muted font-light uppercase tracking-widest mt-1">Manage your earnings and withdrawals</p>
                             </div>
                         </div>
                     </div>
                 </header>
 
-                <div className="p-4 lg:p-8">
+                <div className="p-6 lg:p-10 relative z-10 max-w-7xl mx-auto">
                     {message && (
-                        <div className={`mb-6 p-4 rounded-xl flex items-center gap-3 ${message.type === 'success' ? 'bg-emerald-500/20 border border-emerald-500/50 text-emerald-300' : 'bg-red-500/20 border border-red-500/50 text-red-300'}`}>
+                        <div className={`mb-6 p-4 rounded-xl flex items-center gap-3 ${message.type === 'success' ? 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-600' : 'bg-red-500/10 border border-red-500/20 text-red-600'}`}>
                             {message.type === 'success' ? <Check className="w-5 h-5" /> : <AlertCircle className="w-5 h-5" />}
                             {message.text}
                             <button onClick={() => setMessage(null)} className="ml-auto">
@@ -158,86 +183,87 @@ export default function PayoutsPage() {
 
                     {loading ? (
                         <div className="flex items-center justify-center h-64">
-                            <div className="w-8 h-8 border-2 border-purple-500 border-t-transparent rounded-full animate-spin" />
+                            <div className="w-8 h-8 border-[3px] border-jaipur-gold/20 border-t-jaipur-gold rounded-full animate-spin" />
                         </div>
                     ) : (
                         <>
                             <div className="grid md:grid-cols-3 gap-6 mb-8">
-                                <div className="card bg-purple-500/10 border-purple-500/30">
-                                    <div className="flex items-center justify-between mb-2">
-                                        <p className="text-sm text-purple-300/70">Available Balance</p>
-                                        <div className="w-8 h-8 rounded-lg bg-purple-500/20 flex items-center justify-center">
-                                            <DollarSign className="w-4 h-4 text-purple-400" />
+                                <div className="bg-jaipur-burgundy rounded-[2rem] p-6 text-white relative overflow-hidden group">
+                                    <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -mr-12 -mt-12 blur-xl" />
+                                    <div className="flex items-center justify-between mb-4">
+                                        <p className="text-sm font-medium text-white/80">Available Balance</p>
+                                        <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center">
+                                            <DollarSign className="w-5 h-5 text-jaipur-gold" />
                                         </div>
                                     </div>
-                                    <p className="text-3xl font-bold mb-4">₹{(balance?.available || 0).toLocaleString()}</p>
+                                    <p className="text-3xl font-display font-bold mb-6">₹{(balance?.available || 0).toLocaleString()}</p>
                                     <button
                                         onClick={handleRequestPayout}
                                         disabled={requesting || (balance?.available || 0) < 100}
-                                        className="btn-primary w-full text-sm flex items-center justify-center gap-2"
+                                        className="w-full py-3 bg-white text-jaipur-burgundy rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-jaipur-gold hover:text-white transition-all shadow-lg flex items-center justify-center gap-2"
                                     >
                                         {requesting ? <Loader2 className="w-4 h-4 animate-spin" /> : <ArrowDownToLine className="w-4 h-4" />}
                                         Withdraw Funds
                                     </button>
                                 </div>
 
-                                <div className="card">
-                                    <div className="flex items-center justify-between mb-2">
-                                        <p className="text-sm text-white/40">Total Earned</p>
-                                        <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center">
-                                            <TrendingUp className="w-4 h-4 text-emerald-400" />
+                                <div className="bg-white rounded-[2rem] border border-border-light p-6">
+                                    <div className="flex items-center justify-between mb-4">
+                                        <p className="text-sm font-medium text-text-muted">Total Earned</p>
+                                        <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                                            <TrendingUp className="w-5 h-5" />
                                         </div>
                                     </div>
-                                    <p className="text-3xl font-bold">₹{(balance?.total_earned || 0).toLocaleString()}</p>
-                                    <p className="text-xs text-white/30 mt-2">Commission from delivered orders</p>
+                                    <p className="text-3xl font-display font-bold text-text-primary">₹{(balance?.total_earned || 0).toLocaleString()}</p>
+                                    <p className="text-xs text-text-muted mt-2 font-light">Commission from delivered orders</p>
                                 </div>
 
-                                <div className="card">
-                                    <div className="flex items-center justify-between mb-2">
-                                        <p className="text-sm text-white/40">Total Withdrawn</p>
-                                        <div className="w-8 h-8 rounded-lg bg-pink-500/20 flex items-center justify-center">
-                                            <History className="w-4 h-4 text-pink-400" />
+                                <div className="bg-white rounded-[2rem] border border-border-light p-6">
+                                    <div className="flex items-center justify-between mb-4">
+                                        <p className="text-sm font-medium text-text-muted">Total Withdrawn</p>
+                                        <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
+                                            <History className="w-5 h-5" />
                                         </div>
                                     </div>
-                                    <p className="text-3xl font-bold">₹{(balance?.total_paid || 0).toLocaleString()}</p>
-                                    <p className="text-xs text-white/30 mt-2">Paid out to your bank account</p>
+                                    <p className="text-3xl font-display font-bold text-text-primary">₹{(balance?.total_paid || 0).toLocaleString()}</p>
+                                    <p className="text-xs text-text-muted mt-2 font-light">Paid out to your bank account</p>
                                 </div>
                             </div>
 
-                            <h2 className="text-lg font-semibold mb-4">Payout History</h2>
-                            <div className="card overflow-hidden">
+                            <h2 className="text-lg font-display font-medium mb-4 text-text-primary">Payout History</h2>
+                            <div className="bg-white rounded-[2rem] border border-border-light overflow-hidden shadow-sm">
                                 <div className="overflow-x-auto">
                                     <table className="w-full text-left">
                                         <thead>
-                                            <tr className="border-b border-white/10 bg-white/5">
-                                                <th className="px-6 py-4 text-sm font-semibold text-white/60">Date</th>
-                                                <th className="px-6 py-4 text-sm font-semibold text-white/60">Method</th>
-                                                <th className="px-6 py-4 text-sm font-semibold text-white/60">Status</th>
-                                                <th className="px-6 py-4 text-sm font-semibold text-white/60 text-right">Amount</th>
+                                            <tr className="border-b border-border-light bg-bg-secondary/50">
+                                                <th className="px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-widest">Date</th>
+                                                <th className="px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-widest">Method</th>
+                                                <th className="px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-widest">Status</th>
+                                                <th className="px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-widest text-right">Amount</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {history.length === 0 ? (
                                                 <tr>
-                                                    <td colSpan={4} className="px-6 py-12 text-center text-white/40">
+                                                    <td colSpan={4} className="px-6 py-12 text-center text-text-muted font-light italic">
                                                         No payout history found
                                                     </td>
                                                 </tr>
                                             ) : (
                                                 history.map((record) => (
-                                                    <tr key={record.id} className="border-b border-white/10 hover:bg-white/5 transition-colors">
-                                                        <td className="px-6 py-4 text-sm">
+                                                    <tr key={record.id} className="border-b border-border-light hover:bg-bg-secondary/30 transition-colors">
+                                                        <td className="px-6 py-4 text-sm font-medium text-text-primary">
                                                             {new Date(record.requested_at).toLocaleDateString()}
                                                         </td>
-                                                        <td className="px-6 py-4 text-sm capitalize">
+                                                        <td className="px-6 py-4 text-sm capitalize text-text-secondary">
                                                             {record.payment_method.replace('_', ' ')}
                                                         </td>
                                                         <td className="px-6 py-4">
-                                                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(record.status)}`}>
+                                                            <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide ${getStatusColor(record.status)}`}>
                                                                 {record.status.charAt(0).toUpperCase() + record.status.slice(1)}
                                                             </span>
                                                         </td>
-                                                        <td className="px-6 py-4 text-right font-medium">
+                                                        <td className="px-6 py-4 text-right font-bold text-text-primary">
                                                             ₹{record.amount.toLocaleString()}
                                                         </td>
                                                     </tr>

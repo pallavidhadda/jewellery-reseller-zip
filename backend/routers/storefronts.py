@@ -1,7 +1,8 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Query
+from fastapi import APIRouter, Depends, HTTPException, status, Query, Response
 from sqlalchemy.orm import Session, joinedload
 from sqlalchemy import or_
-from typing import Optional, List
+from typing import Optional, List, Dict
+import time
 
 from database.database import get_db
 from database.models import (
@@ -16,10 +17,17 @@ router = APIRouter(prefix="/store", tags=["Storefront"])
 @router.get("/{slug}")
 async def get_storefront(
     slug: str,
+    response: Response,
     db: Session = Depends(get_db)
 ):
     """Get storefront data by slug"""
-    reseller = db.query(Reseller).filter(
+    # Force no-cache to ensure dashboard settings reflect immediately
+    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, proxy-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    reseller = db.query(Reseller).options(
+        joinedload(Reseller.storefront_config)
+    ).filter(
         Reseller.slug == slug,
         Reseller.is_published == True
     ).first()
@@ -27,13 +35,10 @@ async def get_storefront(
     if not reseller:
         raise HTTPException(status_code=404, detail="Store not found")
     
-    # Get storefront config
-    config = db.query(StorefrontConfig).filter(
-        StorefrontConfig.reseller_id == reseller.id
-    ).first()
+    config = reseller.storefront_config
     
     # Get product count
-    product_count = db.query(ResellerProduct).filter(
+    product_count = db.query(ResellerProduct.id).filter(
         ResellerProduct.reseller_id == reseller.id,
         ResellerProduct.is_active == True
     ).count()

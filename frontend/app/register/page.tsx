@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Diamond, Mail, Lock, Store, ArrowRight, Loader2, CheckCircle, Gem } from 'lucide-react';
+import { Diamond, Eye, EyeOff, ArrowRight, Loader2, CheckCircle, Gem } from 'lucide-react';
 import api from '@/lib/api';
 import { useAuthStore } from '@/lib/store';
 
@@ -17,6 +17,8 @@ export default function RegisterPage() {
     const [businessName, setBusinessName] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -59,124 +61,116 @@ export default function RegisterPage() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-bg-primary overflow-hidden relative">
-            {/* Background Patterns */}
-            <div className="absolute inset-0 z-0 opacity-[0.03]"
-                style={{ backgroundImage: 'url("/lib/patterns/geometric-jali.svg")', backgroundSize: '120px' }} />
+        <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-bg-secondary overflow-hidden relative">
+            {/* Minimalist Background Particles */}
+            <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-40">
+                <div className="absolute top-[10%] left-[10%] w-64 h-64 bg-jaipur-sand rounded-full blur-[120px]" />
+                <div className="absolute bottom-[10%] right-[10%] w-64 h-64 bg-jaipur-gold/5 rounded-full blur-[120px]" />
+            </div>
 
-            <div className="absolute -top-24 -left-24 w-96 h-96 bg-jaipur-peacock/10 rounded-full blur-3xl opacity-40" />
-            <div className="absolute top-1/2 right-0 w-96 h-96 bg-jaipur-gold/10 rounded-full blur-3xl opacity-40" />
-
-            <div className="w-full max-w-md relative z-10 animate-fade-in">
+            <div className="w-full max-w-[440px] relative z-10 animate-fade-in">
                 {/* Logo */}
-                <Link href="/" className="flex items-center justify-center gap-2 mb-8 group">
-                    <div className="w-12 h-12 rounded-full bg-jaipur-pink/30 flex items-center justify-center border border-jaipur-pink group-hover:border-jaipur-gold transition-colors shadow-lg">
-                        <Gem className="w-6 h-6 text-jaipur-burgundy" />
+                <Link href="/" className="flex items-center justify-center gap-2 mb-10 group">
+                    <div className="w-14 h-14 rounded-2xl bg-white flex items-center justify-center border border-border-light group-hover:border-jaipur-gold transition-all duration-500 shadow-sm">
+                        <Gem className="w-7 h-7 text-jaipur-burgundy" />
                     </div>
                 </Link>
 
-                <div className="card bg-white shadow-xl border-border-medium/60 relative overflow-hidden backdrop-blur-xl">
-                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-jaipur"></div>
-
-                    {/* Progress */}
-                    <div className="flex items-center justify-center gap-4 mb-8 pt-4">
-                        <div className={`flex items-center gap-2 ${step >= 1 ? 'text-jaipur-peacock' : 'text-text-muted'}`}>
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-all shadow-sm ${step >= 1 ? 'bg-jaipur-peacock text-white shadow-peacock' : 'bg-bg-secondary text-text-muted border border-border-medium'}`}>
-                                {step > 1 ? <CheckCircle className="w-5 h-5" /> : '1'}
-                            </div>
-                            <span className="text-sm font-medium">Account</span>
-                        </div>
-                        <div className={`w-12 h-0.5 transition-colors ${step >= 2 ? 'bg-jaipur-peacock' : 'bg-border-medium'}`} />
-                        <div className={`flex items-center gap-2 ${step >= 2 ? 'text-jaipur-peacock' : 'text-text-muted'}`}>
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-all shadow-sm ${step >= 2 ? 'bg-jaipur-peacock text-white shadow-peacock' : 'bg-bg-secondary text-text-muted border border-border-medium'}`}>
-                                2
-                            </div>
-                            <span className="text-sm font-medium">Business</span>
-                        </div>
+                <div className="bg-white/90 backdrop-blur-2xl rounded-[2.5rem] p-10 shadow-xl border border-white/40 relative overflow-hidden">
+                    {/* Progress Indicator */}
+                    <div className="flex items-center justify-center gap-2 mb-10">
+                        <div className={`h-1 rounded-full transition-all duration-500 ${step === 1 ? 'w-8 bg-jaipur-burgundy' : 'w-4 bg-border-medium'}`} />
+                        <div className={`h-1 rounded-full transition-all duration-500 ${step === 2 ? 'w-8 bg-jaipur-burgundy' : 'w-4 bg-border-medium'}`} />
                     </div>
 
-                    <div className="text-center mb-6">
-                        <h1 className="font-display text-2xl font-medium text-text-primary mb-2">
-                            {step === 1 ? 'Create Your Account' : 'Name Your Store'}
+                    <div className="text-center mb-10">
+                        <h1 className="text-[28px] font-display font-medium tracking-tight text-text-primary mb-3">
+                            {step === 1 ? 'Create your account' : 'Tell us about your store'}
                         </h1>
-                        <p className="text-text-secondary text-sm">
-                            {step === 1 ? 'Start your jewelry business today' : 'Choose a unique name for your brand'}
+                        <p className="text-text-secondary text-base font-light">
+                            {step === 1 ? 'Join the exclusive reseller network' : 'This will be your identity on our platform'}
                         </p>
                     </div>
 
                     {error && (
-                        <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6 flex items-center gap-2 text-red-700 text-sm">
-                            <span className="font-medium">Error:</span> {error}
+                        <div className="bg-red-50 text-red-600 rounded-2xl p-4 mb-8 text-sm font-medium border border-red-100 animate-slide-up">
+                            {error}
                         </div>
                     )}
 
-                    <form onSubmit={handleSubmit} className="space-y-5">
+                    <form onSubmit={handleSubmit} className="space-y-6">
                         {step === 1 ? (
-                            <div className="space-y-5 animate-slide-up">
+                            <div className="space-y-6 animate-fade-in">
                                 <div>
-                                    <label className="input-label">Email Address</label>
-                                    <div className="relative group">
-                                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted group-focus-within:text-jaipur-peacock transition-colors" />
-                                        <input
-                                            type="email"
-                                            value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
-                                            className="input pl-12 bg-bg-secondary focus:bg-white"
-                                            placeholder="you@example.com"
-                                            required
-                                        />
-                                    </div>
+                                    <label className="input-label">EMAIL ADDRESS</label>
+                                    <input
+                                        type="email"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        className="input"
+                                        placeholder="you@example.com"
+                                        required
+                                    />
                                 </div>
 
                                 <div>
-                                    <label className="input-label">Password</label>
-                                    <div className="relative group">
-                                        <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted group-focus-within:text-jaipur-peacock transition-colors" />
+                                    <label className="input-label">PASSWORD</label>
+                                    <div className="relative">
                                         <input
-                                            type="password"
+                                            type={showPassword ? 'text' : 'password'}
                                             value={password}
                                             onChange={(e) => setPassword(e.target.value)}
-                                            className="input pl-12 bg-bg-secondary focus:bg-white"
-                                            placeholder="••••••••"
+                                            className="input pr-14"
+                                            placeholder="Min. 8 characters"
                                             required
                                             minLength={8}
                                         />
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowPassword(!showPassword)}
+                                            className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-text-muted hover:text-text-primary transition-colors"
+                                        >
+                                            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                        </button>
                                     </div>
                                 </div>
 
                                 <div>
-                                    <label className="input-label">Confirm Password</label>
-                                    <div className="relative group">
-                                        <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted group-focus-within:text-jaipur-peacock transition-colors" />
+                                    <label className="input-label">CONFIRM PASSWORD</label>
+                                    <div className="relative">
                                         <input
-                                            type="password"
+                                            type={showConfirmPassword ? 'text' : 'password'}
                                             value={confirmPassword}
                                             onChange={(e) => setConfirmPassword(e.target.value)}
-                                            className="input pl-12 bg-bg-secondary focus:bg-white"
+                                            className="input pr-14"
                                             placeholder="••••••••"
                                             required
                                         />
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                            className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-text-muted hover:text-text-primary transition-colors"
+                                        >
+                                            {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                         ) : (
-                            <div className="space-y-5 animate-slide-up">
+                            <div className="space-y-6 animate-fade-in">
                                 <div>
-                                    <label className="input-label">Store Name</label>
-                                    <div className="relative group">
-                                        <Store className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted group-focus-within:text-jaipur-peacock transition-colors" />
-                                        <input
-                                            type="text"
-                                            value={businessName}
-                                            onChange={(e) => setBusinessName(e.target.value)}
-                                            className="input pl-12 bg-bg-secondary focus:bg-white"
-                                            placeholder="Sparkle Jewels"
-                                            required
-                                            minLength={2}
-                                        />
-                                    </div>
-                                    <p className="text-xs text-text-muted mt-2 ml-1">
-                                        This will be your store's display name seen by customers
+                                    <label className="input-label">STORE NAME</label>
+                                    <input
+                                        type="text"
+                                        value={businessName}
+                                        onChange={(e) => setBusinessName(e.target.value)}
+                                        className="input"
+                                        placeholder="e.g. Aura Gems"
+                                        required
+                                        minLength={2}
+                                    />
+                                    <p className="text-[12px] text-text-muted mt-3 ml-1 font-light italic">
+                                        Your customers will see this as your official brand name.
                                     </p>
                                 </div>
                             </div>
@@ -185,13 +179,13 @@ export default function RegisterPage() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="btn-primary w-full flex items-center justify-center gap-2 mt-6 shadow-gold"
+                            className="btn-primary w-full h-[58px] text-lg flex items-center justify-center gap-3 mt-4"
                         >
                             {loading ? (
-                                <Loader2 className="w-5 h-5 animate-spin" />
+                                <Loader2 className="w-6 h-6 animate-spin" />
                             ) : (
                                 <>
-                                    {step === 1 ? 'Continue' : 'Create My Store'}
+                                    {step === 1 ? 'Continue' : 'Create Account'}
                                     <ArrowRight className="w-5 h-5" />
                                 </>
                             )}
@@ -201,25 +195,28 @@ export default function RegisterPage() {
                             <button
                                 type="button"
                                 onClick={() => setStep(1)}
-                                className="w-full text-text-secondary hover:text-text-primary text-sm font-medium transition-colors pt-2"
+                                className="w-full text-text-secondary hover:text-jaipur-burgundy text-xs font-bold uppercase tracking-widest transition-all pt-2"
                             >
-                                Go back
+                                Back to details
                             </button>
                         )}
                     </form>
 
-                    <div className="mt-8 pt-6 border-t border-border-light text-center text-sm text-text-secondary">
-                        Already have an account?{' '}
-                        <Link href="/login" className="text-jaipur-peacock hover:text-jaipur-terra font-semibold transition-colors">
-                            Sign in
-                        </Link>
+                    <div className="mt-10 pt-8 border-t border-border-light text-center">
+                        <p className="text-text-secondary text-[14px] font-medium">
+                            Already have an account?{' '}
+                            <Link href="/login" className="text-text-primary font-bold hover:text-jaipur-gold transition-colors underline decoration-jaipur-gold/30 underline-offset-4">
+                                Sign in
+                            </Link>
+                        </p>
                     </div>
                 </div>
 
-                <p className="text-center text-xs text-text-muted mt-6 font-light">
-                    By signing up, you agree to our Terms of Service and Privacy Policy
+                <p className="text-center text-[11px] text-text-muted mt-10 font-medium leading-relaxed max-w-[320px] mx-auto opacity-60">
+                    By joining, you agree to our <span className="underline">Terms</span> and <span className="underline">Privacy Policy</span>.
                 </p>
             </div>
         </div>
     );
 }
+

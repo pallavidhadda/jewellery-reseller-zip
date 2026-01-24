@@ -67,6 +67,9 @@ class ResellerUpdate(BaseModel):
     description: Optional[str] = None
     phone: Optional[str] = None
     address: Optional[str] = None
+    primary_color: Optional[str] = Field(None, pattern=r'^#[0-9A-Fa-f]{6}$')
+    secondary_color: Optional[str] = Field(None, pattern=r'^#[0-9A-Fa-f]{6}$')
+    accent_color: Optional[str] = Field(None, pattern=r'^#[0-9A-Fa-f]{6}$')
 
 class ResellerBranding(BaseModel):
     logo_url: Optional[str] = None

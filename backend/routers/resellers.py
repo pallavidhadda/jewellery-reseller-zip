@@ -229,7 +229,6 @@ async def publish_store(
     reseller.is_onboarded = True
     db.commit()
     db.refresh(reseller)
-    
     return reseller
 
 @router.post("/unpublish", response_model=ResellerResponse)
@@ -436,4 +435,5 @@ async def complete_onboarding(
     reseller.is_onboarded = True
     db.commit()
     db.refresh(reseller)
+    clear_storefront_cache(reseller.slug)
     return reseller

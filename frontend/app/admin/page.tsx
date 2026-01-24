@@ -80,14 +80,14 @@ export default function AdminPage() {
         return (
             <div className="min-h-screen flex items-center justify-center px-4 bg-bg-primary">
                 <div className="card max-w-md w-full text-center bg-white shadow-xl">
-                    <AlertCircle className="w-16 h-16 mx-auto text-jaipur-terra mb-4" />
-                    <h1 className="text-2xl font-display font-bold mb-2 text-text-primary">Access Denied</h1>
-                    <p className="text-text-secondary mb-6">{error}</p>
+                    <AlertCircle className="w-16 h-16 mx-auto text-jaipur-burgundy mb-4" />
+                    <h1 className="text-2xl font-display font-medium mb-2 text-text-primary">Access Denied</h1>
+                    <p className="text-text-secondary font-light mb-6">{error}</p>
                     <div className="space-y-3">
                         <Link href="/login" className="btn-primary block shadow-gold">
                             Login as Admin
                         </Link>
-                        <p className="text-sm text-text-muted">
+                        <p className="text-[11px] text-text-muted font-bold uppercase tracking-widest">
                             Admin: admin@jewelryplatform.com / admin123
                         </p>
                     </div>
@@ -97,253 +97,205 @@ export default function AdminPage() {
     }
 
     return (
-        <div className="min-h-screen flex bg-bg-primary">
+        <div className="min-h-screen flex bg-bg-secondary">
             {/* Sidebar */}
             <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-jaipur-burgundy text-white transform transition-transform duration-300 lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} shadow-2xl`}>
-                <div className="flex items-center gap-3 p-6 border-b border-white/10">
-                    <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center border border-white/20">
+                <div className="flex items-center gap-3 p-6 border-b border-white/5">
+                    <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10">
                         <Gem className="w-5 h-5 text-jaipur-gold" />
                     </div>
                     <div>
-                        <span className="font-display text-xl font-bold tracking-wide">JewelryHub</span>
-                        <span className="block text-xs text-jaipur-gold opacity-80 uppercase tracking-widest">Admin Panel</span>
+                        <span className="font-display text-xl font-medium tracking-tight">JewelryHub</span>
+                        <span className="block text-[10px] text-jaipur-gold/70 uppercase tracking-[0.2em] font-bold">Registry</span>
                     </div>
                 </div>
 
-                <nav className="p-4 space-y-2">
+                <nav className="p-4 space-y-1">
                     {navItems.map((item) => (
                         <Link
                             key={item.href}
                             href={item.href}
-                            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${item.active
-                                ? 'bg-white text-jaipur-burgundy shadow-lg font-medium'
-                                : 'text-white/70 hover:bg-white/10 hover:text-white'
+                            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-500 ${item.active
+                                ? 'bg-white/10 text-white border border-white/10 shadow-lg'
+                                : 'text-white/50 hover:bg-white/5 hover:text-white'
                                 }`}
                         >
-                            <item.icon className={`w-5 h-5 ${item.active ? 'text-jaipur-terra' : ''}`} />
-                            {item.label}
+                            <item.icon className={`w-4 h-4 ${item.active ? 'text-jaipur-gold' : ''}`} />
+                            <span className="text-sm font-medium tracking-wide">{item.label}</span>
                         </Link>
                     ))}
                 </nav>
 
-                <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-white/10">
+                <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-white/5">
                     <button
                         onClick={handleLogout}
-                        className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-white/70 hover:bg-white/10 hover:text-white transition-colors"
+                        className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-white/40 hover:bg-white/5 hover:text-white transition-all duration-300"
                     >
-                        <LogOut className="w-5 h-5" />
-                        Sign Out
+                        <LogOut className="w-4 h-4" />
+                        <span className="text-sm font-medium">Sign Out</span>
                     </button>
                 </div>
             </aside>
 
             {/* Mobile overlay */}
             {sidebarOpen && (
-                <div className="fixed inset-0 bg-black/50 z-40 lg:hidden backdrop-blur-sm" onClick={() => setSidebarOpen(false)} />
+                <div className="fixed inset-0 bg-black/40 z-40 lg:hidden backdrop-blur-sm" onClick={() => setSidebarOpen(false)} />
             )}
 
             {/* Main content */}
-            <main className="flex-1 lg:ml-64 relative">
+            <main className="flex-1 lg:ml-64 relative min-h-screen">
                 {/* Background Pattern */}
-                <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none"
-                    style={{ backgroundImage: 'url("/lib/patterns/geometric-jali.svg")', backgroundSize: '150px' }} />
+                <div className="absolute inset-0 z-0 opacity-[0.02] pointer-events-none"
+                    style={{ backgroundImage: 'url("/lib/patterns/geometric-jali.svg")', backgroundSize: '180px' }} />
 
                 {/* Header */}
-                <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-border-light px-4 lg:px-8 py-4 shadow-sm">
+                <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-border-light px-6 lg:px-10 py-5">
                     <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-6">
                             <button className="lg:hidden text-text-primary p-2 hover:bg-bg-secondary rounded-lg transition-colors" onClick={() => setSidebarOpen(!sidebarOpen)}>
                                 {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                             </button>
                             <div>
-                                <h1 className="text-xl font-display font-semibold text-text-primary">Overview</h1>
-                                <p className="text-sm text-text-secondary">Platform statistics and management</p>
+                                <h1 className="text-2xl font-display font-medium text-text-primary tracking-tight">Overview</h1>
+                                <p className="text-xs text-text-muted font-light uppercase tracking-widest mt-1">Platform Orchestration</p>
                             </div>
                         </div>
                     </div>
                 </header>
 
-                <div className="p-4 lg:p-8 relative z-10">
+                <div className="p-6 lg:p-10 relative z-10 max-w-7xl mx-auto">
                     {loading ? (
-                        <div className="flex items-center justify-center h-64">
-                            <div className="w-10 h-10 border-2 border-jaipur-terra border-t-transparent rounded-full animate-spin" />
+                        <div className="flex items-center justify-center h-[60vh]">
+                            <div className="w-8 h-8 border-[3px] border-jaipur-gold/20 border-t-jaipur-gold rounded-full animate-spin" />
                         </div>
                     ) : stats ? (
                         <>
                             {/* Stats Grid */}
-                            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                                <div className="card bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 border-t-4 border-jaipur-peacock">
-                                    <div className="flex items-start justify-between">
-                                        <div>
-                                            <p className="text-sm text-text-secondary mb-1 font-medium">Total Revenue</p>
-                                            <p className="text-2xl font-bold text-text-primary font-display">₹{stats.revenue.total.toLocaleString()}</p>
-                                            <p className="text-xs text-green-600 mt-1 flex items-center gap-1">
-                                                <TrendingUp className="w-3 h-3" />
-                                                ₹{stats.revenue.this_month.toLocaleString()} this month
-                                            </p>
+                            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+                                <div className="bg-white p-7 rounded-[2rem] border border-border-light shadow-sm hover:shadow-xl hover:border-jaipur-gold/20 transition-all duration-500 group">
+                                    <div className="flex items-start justify-between mb-4">
+                                        <div className="p-3 bg-jaipur-gold/5 rounded-2xl group-hover:bg-jaipur-gold/10 transition-colors">
+                                            <DollarSign className="w-5 h-5 text-jaipur-gold" />
                                         </div>
-                                        <div className="w-10 h-10 rounded-xl bg-jaipur-peacock/10 flex items-center justify-center text-jaipur-peacock">
-                                            <DollarSign className="w-5 h-5" />
-                                        </div>
+                                        <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">+12%</span>
                                     </div>
+                                    <p className="text-[11px] font-bold text-text-muted uppercase tracking-widest mb-1">Gross Revenue</p>
+                                    <p className="text-2xl font-bold text-text-primary font-display">₹{stats.revenue.total.toLocaleString()}</p>
                                 </div>
 
-                                <div className="card bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 border-t-4 border-jaipur-terra">
-                                    <div className="flex items-start justify-between">
-                                        <div>
-                                            <p className="text-sm text-text-secondary mb-1 font-medium">Active Resellers</p>
-                                            <p className="text-2xl font-bold text-text-primary font-display">{stats.resellers.active}</p>
-                                            <p className="text-xs text-jaipur-terra mt-1">
-                                                +{stats.resellers.new_this_month} new accounts
-                                            </p>
-                                        </div>
-                                        <div className="w-10 h-10 rounded-xl bg-jaipur-terra/10 flex items-center justify-center text-jaipur-terra">
-                                            <Users className="w-5 h-5" />
+                                <div className="bg-white p-7 rounded-[2rem] border border-border-light shadow-sm hover:shadow-xl hover:border-jaipur-gold/20 transition-all duration-500 group">
+                                    <div className="flex items-start justify-between mb-4">
+                                        <div className="p-3 bg-jaipur-burgundy/5 rounded-2xl group-hover:bg-jaipur-burgundy/10 transition-colors">
+                                            <Users className="w-5 h-5 text-jaipur-burgundy" />
                                         </div>
                                     </div>
+                                    <p className="text-[11px] font-bold text-text-muted uppercase tracking-widest mb-1">Active Resellers</p>
+                                    <p className="text-2xl font-bold text-text-primary font-display">{stats.resellers.active}</p>
                                 </div>
 
-                                <div className="card bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 border-t-4 border-jaipur-pink">
-                                    <div className="flex items-start justify-between">
-                                        <div>
-                                            <p className="text-sm text-text-secondary mb-1 font-medium">Total Orders</p>
-                                            <p className="text-2xl font-bold text-text-primary font-display">{stats.orders.total}</p>
-                                            <p className="text-xs text-jaipur-burgundy mt-1">
-                                                {stats.orders.pending} pending fulfillment
-                                            </p>
-                                        </div>
-                                        <div className="w-10 h-10 rounded-xl bg-jaipur-pink/30 flex items-center justify-center text-jaipur-burgundy">
-                                            <ShoppingCart className="w-5 h-5" />
+                                <div className="bg-white p-7 rounded-[2rem] border border-border-light shadow-sm hover:shadow-xl hover:border-jaipur-gold/20 transition-all duration-500 group">
+                                    <div className="flex items-start justify-between mb-4">
+                                        <div className="p-3 bg-neutral-900/5 rounded-2xl group-hover:bg-neutral-900/10 transition-colors">
+                                            <ShoppingCart className="w-5 h-5 text-neutral-900" />
                                         </div>
                                     </div>
+                                    <p className="text-[11px] font-bold text-text-muted uppercase tracking-widest mb-1">Total Orders</p>
+                                    <p className="text-2xl font-bold text-text-primary font-display">{stats.orders.total}</p>
                                 </div>
 
-                                <div className="card bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 border-t-4 border-jaipur-gold">
-                                    <div className="flex items-start justify-between">
-                                        <div>
-                                            <p className="text-sm text-text-secondary mb-1 font-medium">Products</p>
-                                            <p className="text-2xl font-bold text-text-primary font-display">{stats.products.total}</p>
-                                            <p className="text-xs text-jaipur-gold-dark mt-1">
-                                                From {stats.manufacturers.total} manufacturer(s)
-                                            </p>
-                                        </div>
-                                        <div className="w-10 h-10 rounded-xl bg-jaipur-gold/20 flex items-center justify-center text-jaipur-gold-dark">
-                                            <Package className="w-5 h-5" />
+                                <div className="bg-white p-7 rounded-[2rem] border border-border-light shadow-sm hover:shadow-xl hover:border-jaipur-gold/20 transition-all duration-500 group">
+                                    <div className="flex items-start justify-between mb-4">
+                                        <div className="p-3 bg-jaipur-gold/5 rounded-2xl group-hover:bg-jaipur-gold/10 transition-colors">
+                                            <Package className="w-5 h-5 text-jaipur-gold" />
                                         </div>
                                     </div>
+                                    <p className="text-[11px] font-bold text-text-muted uppercase tracking-widest mb-1">Jewelry Library</p>
+                                    <p className="text-2xl font-bold text-text-primary font-display">{stats.products.total}</p>
                                 </div>
                             </div>
 
-                            {/* Secondary Stats */}
-                            <div className="grid lg:grid-cols-3 gap-6 mb-8">
-                                <div className="card bg-white shadow-lg border-border-light">
-                                    <h3 className="font-display font-semibold mb-4 flex items-center gap-2 text-text-primary">
-                                        <TrendingUp className="w-5 h-5 text-jaipur-peacock" />
-                                        Platform Summary
-                                    </h3>
-                                    <div className="space-y-3">
-                                        <div className="flex justify-between py-2 border-b border-border-light">
-                                            <span className="text-text-secondary">Total Resellers</span>
-                                            <span className="font-semibold text-text-primary">{stats.resellers.total}</span>
-                                        </div>
-                                        <div className="flex justify-between py-2 border-b border-border-light">
-                                            <span className="text-text-secondary">Active Stores</span>
-                                            <span className="font-semibold text-text-primary">{stats.resellers.active}</span>
-                                        </div>
-                                        <div className="flex justify-between py-2 border-b border-border-light">
-                                            <span className="text-text-secondary">Manufacturers</span>
-                                            <span className="font-semibold text-text-primary">{stats.manufacturers.total}</span>
-                                        </div>
-                                        <div className="flex justify-between py-2">
-                                            <span className="text-text-secondary">Products in Catalog</span>
-                                            <span className="font-semibold text-text-primary">{stats.products.total}</span>
-                                        </div>
+                            {/* Secondary Sections */}
+                            <div className="grid lg:grid-cols-3 gap-8 mb-10">
+                                <div className="bg-white p-8 rounded-[2.5rem] border border-border-light shadow-sm lg:col-span-1">
+                                    <h3 className="font-display text-xl font-medium mb-6 text-text-primary">Platform Pulse</h3>
+                                    <div className="space-y-4">
+                                        {[
+                                            { label: 'Total Resellers', value: stats.resellers.total },
+                                            { label: 'Verified Manufacturers', value: stats.manufacturers.total },
+                                            { label: 'Published Stores', value: stats.resellers.active },
+                                            { label: 'Global Catalog', value: stats.products.total },
+                                        ].map((item, idx) => (
+                                            <div key={idx} className="flex justify-between items-center py-4 border-b border-bg-secondary last:border-0">
+                                                <span className="text-sm text-text-secondary font-light">{item.label}</span>
+                                                <span className="font-medium text-text-primary">{item.value}</span>
+                                            </div>
+                                        ))}
                                     </div>
                                 </div>
 
-                                <div className="card bg-white shadow-lg border-border-light relative overflow-hidden group">
-                                    <div className="absolute top-0 right-0 w-32 h-32 bg-jaipur-pink/20 rounded-bl-full -mr-8 -mt-8 transition-transform group-hover:scale-110" />
+                                <div className="bg-jaipur-burgundy p-8 rounded-[2.5rem] shadow-xl relative overflow-hidden group">
+                                    <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -mr-16 -mt-16 blur-2xl group-hover:scale-150 transition-transform duration-700" />
+                                    <h3 className="font-display text-xl font-medium mb-2 text-white/90">Pending Settlements</h3>
+                                    <p className="text-xs text-jaipur-gold font-bold uppercase tracking-widest mb-10">Reseller Payouts</p>
 
-                                    <h3 className="font-display font-semibold mb-4 flex items-center gap-2 text-text-primary relative z-10">
-                                        <CreditCard className="w-5 h-5 text-jaipur-terra" />
-                                        Payouts
-                                    </h3>
-                                    <div className="text-center py-6 relative z-10">
-                                        <p className="text-4xl font-display font-bold text-jaipur-terra mb-2">
+                                    <div className="mb-10">
+                                        <p className="text-4xl font-display font-medium text-white mb-2">
                                             ₹{stats.payouts.pending.toLocaleString()}
                                         </p>
-                                        <p className="text-text-secondary text-sm mb-6">Pending payouts to resellers</p>
-                                        <Link href="/admin/payouts" className="btn-secondary text-sm px-6 hover:bg-jaipur-terra hover:text-white hover:border-jaipur-terra transition-all">
-                                            Manage Payouts
-                                        </Link>
+                                        <p className="text-white/50 text-xs font-light">Accrued over the last 14 days</p>
                                     </div>
+
+                                    <Link href="/admin/payouts" className="inline-flex items-center gap-2 px-6 py-3 bg-jaipur-gold text-jaipur-burgundy rounded-full text-xs font-bold uppercase tracking-widest hover:bg-white transition-all shadow-lg active:scale-95">
+                                        Process Payouts <ArrowRight size={14} />
+                                    </Link>
                                 </div>
 
-                                <div className="card bg-white shadow-lg border-border-light relative overflow-hidden group">
-                                    <div className="absolute top-0 right-0 w-32 h-32 bg-jaipur-gold/10 rounded-bl-full -mr-8 -mt-8 transition-transform group-hover:scale-110" />
+                                <div className="bg-white p-8 rounded-[2.5rem] border border-border-light shadow-sm flex flex-col justify-between">
+                                    <div>
+                                        <h3 className="font-display text-xl font-medium mb-2 text-text-primary">Monthly Velocity</h3>
+                                        <p className="text-[10px] text-text-muted font-bold uppercase tracking-widest mb-8">Performance Snapshot</p>
 
-                                    <h3 className="font-display font-semibold mb-4 flex items-center gap-2 text-text-primary relative z-10">
-                                        <Clock className="w-5 h-5 text-jaipur-gold-dark" />
-                                        Orders This Month
-                                    </h3>
-                                    <div className="text-center py-6 relative z-10">
-                                        <p className="text-4xl font-display font-bold text-jaipur-gold-dark mb-2">
-                                            {stats.orders.this_month}
-                                        </p>
-                                        <p className="text-text-secondary text-sm mb-6">Orders processed successfully</p>
-                                        <Link href="/admin/orders" className="btn-secondary text-sm px-6 hover:bg-jaipur-gold hover:text-white hover:border-jaipur-gold transition-all">
-                                            View All Orders
-                                        </Link>
+                                        <div className="text-center py-4">
+                                            <p className="text-4xl font-display font-medium text-text-primary mb-2">
+                                                {stats.orders.this_month}
+                                            </p>
+                                            <p className="text-text-secondary text-xs font-light italic">Successful conversions this cycle</p>
+                                        </div>
                                     </div>
+
+                                    <Link href="/admin/orders" className="w-full flex items-center justify-center gap-2 py-4 bg-bg-secondary hover:bg-bg-accent text-text-primary rounded-2xl text-xs font-bold uppercase tracking-widest transition-all">
+                                        Audit History
+                                    </Link>
                                 </div>
                             </div>
 
-                            {/* Quick Actions */}
-                            <div className="card bg-white shadow-lg border-border-light">
-                                <div className="flex items-center justify-between mb-6">
-                                    <h3 className="font-display font-semibold text-lg text-text-primary">Quick Actions</h3>
-                                </div>
+                            {/* Orchestration Tools */}
+                            <div className="bg-white p-10 rounded-[3rem] border border-border-light shadow-sm">
+                                <h3 className="font-display text-2xl font-medium mb-10 text-text-primary">Registry Coordination</h3>
 
-                                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                                    <Link href="/admin/resellers" className="p-4 rounded-xl bg-bg-secondary hover:bg-jaipur-pink/20 border border-transparent hover:border-jaipur-pink/50 transition-all group">
-                                        <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-3 shadow-sm group-hover:scale-110 transition-transform">
-                                            <Users className="w-5 h-5 text-jaipur-peacock" />
-                                        </div>
-                                        <p className="font-medium text-text-primary">Manage Resellers</p>
-                                        <p className="text-sm text-text-secondary mt-1">View and approve stores</p>
-                                    </Link>
-
-                                    <Link href="/admin/orders" className="p-4 rounded-xl bg-bg-secondary hover:bg-jaipur-pink/20 border border-transparent hover:border-jaipur-pink/50 transition-all group">
-                                        <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-3 shadow-sm group-hover:scale-110 transition-transform">
-                                            <Package className="w-5 h-5 text-jaipur-terra" />
-                                        </div>
-                                        <p className="font-medium text-text-primary">View Orders</p>
-                                        <p className="text-sm text-text-secondary mt-1">Track platform orders</p>
-                                    </Link>
-
-                                    <Link href="/admin/payouts" className="p-4 rounded-xl bg-bg-secondary hover:bg-jaipur-pink/20 border border-transparent hover:border-jaipur-pink/50 transition-all group">
-                                        <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-3 shadow-sm group-hover:scale-110 transition-transform">
-                                            <CreditCard className="w-5 h-5 text-green-600" />
-                                        </div>
-                                        <p className="font-medium text-text-primary">Process Payouts</p>
-                                        <p className="text-sm text-text-secondary mt-1">Approve pending payouts</p>
-                                    </Link>
-
-                                    <Link href="/" className="p-4 rounded-xl bg-bg-secondary hover:bg-jaipur-pink/20 border border-transparent hover:border-jaipur-pink/50 transition-all group">
-                                        <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-3 shadow-sm group-hover:scale-110 transition-transform">
-                                            <Store className="w-5 h-5 text-jaipur-gold-dark" />
-                                        </div>
-                                        <p className="font-medium text-text-primary">View Platform</p>
-                                        <p className="text-sm text-text-secondary mt-1">Visit the main site</p>
-                                    </Link>
+                                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                                    {[
+                                        { label: 'Resellers', sub: 'Audit & Enable', icon: Users, color: 'text-jaipur-gold', href: '/admin/resellers' },
+                                        { label: 'Inventory', sub: 'Standardize Stock', icon: Package, color: 'text-text-primary', href: '/admin/orders' },
+                                        { label: 'Settlements', sub: 'Payout Queue', icon: CreditCard, color: 'text-emerald-600', href: '/admin/payouts' },
+                                        { label: 'Concierge', sub: 'Support Flux', icon: Gem, color: 'text-jaipur-burgundy', href: '/' },
+                                    ].map((action, i) => (
+                                        <Link key={i} href={action.href} className="group p-6 rounded-[2rem] bg-bg-secondary hover:bg-white border border-transparent hover:border-jaipur-gold/20 hover:shadow-xl transition-all duration-500">
+                                            <div className="w-12 h-12 rounded-2xl bg-white group-hover:bg-bg-secondary flex items-center justify-center mb-6 shadow-sm transition-transform duration-500 group-hover:rotate-12">
+                                                <action.icon className={`w-6 h-6 ${action.color}`} />
+                                            </div>
+                                            <p className="font-display text-lg font-medium text-text-primary tracking-tight">{action.label}</p>
+                                            <p className="text-xs text-text-muted font-light mt-1">{action.sub}</p>
+                                        </Link>
+                                    ))}
                                 </div>
                             </div>
                         </>
                     ) : (
-                        <div className="card bg-white shadow-xl text-center py-16">
-                            <AlertCircle className="w-16 h-16 mx-auto text-text-muted mb-4" />
-                            <h3 className="text-xl font-semibold mb-2 text-text-primary">No data available</h3>
-                            <p className="text-text-secondary">Unable to load dashboard statistics</p>
+                        <div className="bg-white rounded-[3rem] border border-border-light shadow-xl text-center py-20">
+                            <AlertCircle className="w-16 h-16 mx-auto text-jaipur-gold/20 mb-6" />
+                            <h3 className="text-2xl font-display font-medium text-text-primary mb-2">Vault Synchronizing</h3>
+                            <p className="text-text-secondary font-light">Unable to retrieve registry data at this moment.</p>
                         </div>
                     )}
                 </div>
@@ -351,3 +303,4 @@ export default function AdminPage() {
         </div>
     );
 }
+

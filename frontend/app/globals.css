@@ -6,42 +6,42 @@
 @tailwind utilities;
 
 /* ============================================
-   JAIPUR FUSION COLOR PALETTE
+   JAIPUR LUXURY COLOR PALETTE
    ============================================ */
 :root {
   /* Backgrounds */
   --bg-primary: #FFFFFF;
-  --bg-secondary: #FAFAF8;
-  --bg-accent: #FFF8F3;
-  
-  /* Jaipur Signature Colors */
-  --jaipur-pink: #F4C2C2;
-  --jaipur-terra: #D97757;
-  --jaipur-sand: #E8DCC4;
-  --jaipur-peacock: #0F7B8A;
-  --jaipur-gold: #C9A961;
-  --jaipur-burgundy: #8B2635;
-  
-  /* Text */
-  --text-primary: #2C2C2C;
-  --text-secondary: #6B6460;
-  --text-muted: #9B9490;
-  
+  --bg-secondary: #FAFAF9;
+  --bg-accent: #FDFBF7;
+
+  /* Jaipur Signature Colors - SYNCED WITH THEME */
+  --jaipur-pink: #FDF2F0;
+  --jaipur-terra: #A67C70;
+  --jaipur-sand: #F2EBE5;
+  --jaipur-peacock: #2A5A63;
+  --jaipur-gold: #C0A062;
+  --jaipur-burgundy: #6B2D38;
+
+  /* Text Semantic Tokens */
+  --text-primary: #242424;
+  --text-secondary: #6E6E73;
+  --text-muted: #86868B;
+
   /* Borders & Dividers */
-  --border-light: #F0EBE6;
-  --border-medium: #E0D8D0;
-  --border-accent: #C9A961;
-  
-  /* Shadows */
-  --shadow-sm: 0 1px 2px 0 rgba(44, 44, 44, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(44, 44, 44, 0.08);
-  --shadow-lg: 0 10px 15px -3px rgba(44, 44, 44, 0.1);
-  --shadow-xl: 0 20px 25px -5px rgba(44, 44, 44, 0.12);
-  
+  --border-light: #F2EBE5;
+  --border-medium: #E6DCD5;
+  --border-accent: var(--jaipur-gold);
+
+  /* Shadows - Premium Softness */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.02);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.08);
+  --shadow-xl: 0 32px 64px rgba(0, 0, 0, 0.12);
+
   /* Transitions */
-  --transition-fast: 200ms cubic-bezier(0.4, 0.0, 0.2, 1);
-  --transition-base: 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
-  --transition-slow: 500ms cubic-bezier(0.4, 0.0, 0.2, 1);
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 600ms cubic-bezier(0.4, 0, 0, 1);
 }
 
 /* ============================================
@@ -60,10 +60,11 @@ html {
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'SF Pro Text', 'Helvetica Neue', sans-serif;
   background: var(--bg-primary);
   color: var(--text-primary);
-  line-height: 1.6;
+  line-height: 1.47059;
+  /* Apple standard */
   min-height: 100vh;
   overflow-x: hidden;
 }
@@ -79,146 +80,95 @@ body {
   font-family: 'Inter', sans-serif;
 }
 
-/* Display headings */
-.text-display-xl {
-  font-size: 4.5rem;
-  font-weight: 300;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-}
-
-.text-display-lg {
-  font-size: 3.5rem;
-  font-weight: 300;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-}
-
-.text-display-md {
-  font-size: 3rem;
-  font-weight: 400;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
-}
-
-/* ============================================
-   JAIPUR GRADIENT TEXT
-   ============================================ */
-.gradient-text-jaipur {
-  background: linear-gradient(135deg, var(--jaipur-terra) 0%, var(--jaipur-gold) 50%, var(--jaipur-peacock) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
 /* ============================================
    BUTTON STYLES
    ============================================ */
 .btn-primary {
-  @apply px-6 py-3 rounded-lg font-semibold transition-all duration-300;
-  background: linear-gradient(135deg, var(--jaipur-terra) 0%, var(--jaipur-gold) 100%);
+  @apply px-6 py-3 rounded-xl font-semibold transition-all duration-300;
+  background: var(--jaipur-burgundy);
   color: white;
-  box-shadow: 0 2px 8px rgba(217, 119, 87, 0.2);
+  border: none;
 }
 
 .btn-primary:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(217, 119, 87, 0.3);
+  opacity: 0.9;
+  transform: scale(1.01);
 }
 
 .btn-primary:active {
-  transform: translateY(0);
+  transform: scale(0.98);
 }
 
 .btn-secondary {
-  @apply px-6 py-3 rounded-lg font-semibold transition-all duration-300;
-  background: transparent;
-  color: var(--jaipur-peacock);
-  border: 1.5px solid var(--jaipur-peacock);
-}
-
-.btn-secondary:hover {
-  background: var(--jaipur-peacock);
-  color: white;
-}
-
-.btn-ghost {
-  @apply px-6 py-3 rounded-lg font-medium transition-all duration-300;
+  @apply px-6 py-3 rounded-xl font-semibold transition-all duration-300;
   background: transparent;
   color: var(--text-primary);
   border: 1px solid var(--border-medium);
 }
 
+.btn-secondary:hover {
+  background: var(--bg-secondary);
+}
+
+.btn-ghost {
+  @apply px-6 py-3 rounded-xl font-medium transition-all duration-300;
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid transparent;
+}
+
 .btn-ghost:hover {
-  border-color: var(--jaipur-gold);
-  color: var(--jaipur-gold);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
 }
 
 /* ============================================
    CARD STYLES
    ============================================ */
 .card {
-  @apply rounded-2xl p-6 transition-all duration-300;
-  background: var(--bg-primary);
-  border: 1px solid var(--border-light);
-}
-
-.card-hover {
-  @apply cursor-pointer;
+  @apply rounded-[2.5rem] p-8 transition-all duration-500;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-xl);
 }
 
 .card-hover:hover {
-  border-color: var(--jaipur-gold);
-  box-shadow: 0 8px 24px rgba(201, 169, 97, 0.12);
-  transform: translateY(-4px);
-}
-
-.card-pattern {
-  position: relative;
-  overflow: hidden;
-}
-
-.card-pattern::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: url('/lib/patterns/mandala-1.svg');
-  background-size: 200px;
-  background-position: center;
-  opacity: 0.03;
-  pointer-events: none;
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.12);
 }
 
 /* ============================================
    INPUT STYLES
    ============================================ */
 .input {
-  @apply w-full px-4 py-3 rounded-lg transition-all duration-200;
-  background: var(--bg-primary);
-  border: 1.5px solid var(--border-medium);
+  @apply w-full h-[54px] px-5 rounded-2xl transition-all duration-300;
+  background: #F5F5F7;
+  /* Apple Input BG */
+  border: 1px solid transparent;
   color: var(--text-primary);
-  font-family: 'Inter', sans-serif;
-  font-size: 1rem;
+  font-size: 17px;
 }
 
 .input::placeholder {
   color: var(--text-muted);
+  opacity: 0.6;
 }
 
 .input:focus {
   outline: none;
+  background: white;
   border-color: var(--jaipur-gold);
-  box-shadow: 0 0 0 3px rgba(201, 169, 97, 0.1);
+  box-shadow: 0 0 0 4px rgba(192, 160, 98, 0.1);
 }
 
 .input-label {
-  @apply block mb-2;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--text-secondary);
+  @apply block mb-2 px-1;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
 }
 
 /* ============================================
@@ -248,7 +198,8 @@ body {
   background-image: url('/lib/patterns/mandala-1.svg');
   background-size: 400px;
   background-position: center;
-  opacity: 0.05;
+  opacity: 0.03;
+  /* Kept very refined */
   pointer-events: none;
 }
 
@@ -257,65 +208,57 @@ body {
    ============================================ */
 .divider-jaipur {
   width: 100%;
-  height: 40px;
+  height: 24px;
+  /* Smaller */
   background-image: url('/lib/patterns/divider.svg');
-  background-size: 200px 40px;
+  background-size: auto 24px;
   background-position: center;
   background-repeat: no-repeat;
   margin: 2rem 0;
+  opacity: 0.6;
+  /* Softer */
 }
 
 /* ============================================
-   GLASS EFFECT (Subtle for Jaipur theme)
+   GLASS EFFECT
    ============================================ */
 .glass {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid var(--border-light);
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.03);
 }
 
 /* ============================================
    SCROLLBAR STYLING
    ============================================ */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--bg-secondary);
-  border-radius: 4px;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--jaipur-sand);
-  border-radius: 4px;
+  background: #D4D4D4;
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--jaipur-gold);
+  background: #B0B0B0;
 }
 
 /* ============================================
-   GLOW EFFECTS (Jaipur colors)
+   GLOW EFFECTS
    ============================================ */
 .glow-gold {
-  box-shadow: 0 0 20px rgba(201, 169, 97, 0.3),
-              0 0 40px rgba(201, 169, 97, 0.15),
-              0 0 60px rgba(201, 169, 97, 0.08);
+  box-shadow: 0 0 30px rgba(192, 160, 98, 0.15);
 }
 
-.glow-terra {
-  box-shadow: 0 0 20px rgba(217, 119, 87, 0.3),
-              0 0 40px rgba(217, 119, 87, 0.15),
-              0 0 60px rgba(217, 119, 87, 0.08);
-}
-
-.glow-peacock {
-  box-shadow: 0 0 20px rgba(15, 123, 138, 0.3),
-              0 0 40px rgba(15, 123, 138, 0.15),
-              0 0 60px rgba(15, 123, 138, 0.08);
+.glow-subtle {
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.05);
 }
 
 /* ============================================
@@ -326,6 +269,7 @@ body {
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -337,6 +281,7 @@ body {
     opacity: 0;
     transform: translateY(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -347,49 +292,134 @@ body {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.5s ease-out;
+  animation: fadeIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .animate-slide-down {
-  animation: slideDown 0.3s ease-out;
+  animation: slideDown 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .animate-mandala {
-  animation: mandalaRotate 60s linear infinite;
+  animation: mandalaRotate 120s linear infinite;
 }
 
+/* Slower rotation */
+
 /* ============================================
-   UTILITY CLASSES
+   UTILITY CLASSES - REFINED
    ============================================ */
-.text-jaipur-pink { color: var(--jaipur-pink); }
-.text-jaipur-terra { color: var(--jaipur-terra); }
-.text-jaipur-sand { color: var(--jaipur-sand); }
-.text-jaipur-peacock { color: var(--jaipur-peacock); }
-.text-jaipur-gold { color: var(--jaipur-gold); }
-.text-jaipur-burgundy { color: var(--jaipur-burgundy); }
+.text-jaipur-gold {
+  color: var(--jaipur-gold);
+}
 
-.bg-jaipur-pink { background-color: var(--jaipur-pink); }
-.bg-jaipur-terra { background-color: var(--jaipur-terra); }
-.bg-jaipur-sand { background-color: var(--jaipur-sand); }
-.bg-jaipur-peacock { background-color: var(--jaipur-peacock); }
-.bg-jaipur-gold { background-color: var(--jaipur-gold); }
-.bg-jaipur-burgundy { background-color: var(--jaipur-burgundy); }
+.text-jaipur-burgundy {
+  color: var(--jaipur-burgundy);
+}
 
-.border-jaipur-gold { border-color: var(--jaipur-gold); }
-.border-jaipur-terra { border-color: var(--jaipur-terra); }
-.border-jaipur-peacock { border-color: var(--jaipur-peacock); }
+.text-jaipur-peacock {
+  color: var(--jaipur-peacock);
+}
+
+.text-jaipur-terra {
+  color: var(--jaipur-terra);
+}
+
+.bg-jaipur-burgundy {
+  background-color: var(--jaipur-burgundy);
+}
+
+.bg-jaipur-gold {
+  background-color: var(--jaipur-gold);
+}
+
+.bg-jaipur-sand {
+  background-color: var(--jaipur-sand);
+}
+
+.bg-jaipur-pink {
+  background-color: var(--jaipur-pink);
+}
+
+.bg-jaipur-peacock {
+  background-color: var(--jaipur-peacock);
+}
 
 /* ============================================
    RESPONSIVE HELPERS
    ============================================ */
 @media (max-width: 768px) {
-  .text-display-xl { font-size: 2.5rem; }
-  .text-display-lg { font-size: 2rem; }
-  .text-display-md { font-size: 1.75rem; }
+  .text-display-xl {
+    font-size: 2.75rem;
+  }
+
+  .text-display-lg {
+    font-size: 2.25rem;
+  }
+
+  .text-display-md {
+    font-size: 1.75rem;
+  }
+}
+
+/* ============================================
+   ADDITIONAL STOREFRONT ANIMATIONS
+   ============================================ */
+@keyframes slideLeft {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes growY {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-slide-left {
+  animation: slideLeft 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.animate-grow-y {
+  animation: growY 1s cubic-bezier(0.2, 0.8, 0.2, 1) origin-top forwards;
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--jaipur-burgundy);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
 }
