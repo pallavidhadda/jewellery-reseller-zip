@@ -5,6 +5,14 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import JSONResponse
 import os
 
+# Monkeypatch for passlib compatibility with bcrypt 4.x
+try:
+    import bcrypt
+    if not hasattr(bcrypt, "__about__"):
+        bcrypt.__about__ = bcrypt
+except ImportError:
+    pass
+
 from database.database import init_db
 
 # Import routers
