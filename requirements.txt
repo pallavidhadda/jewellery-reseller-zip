@@ -1,17 +1,18 @@
-# Jewelry Reseller Platform - Requirements
-fastapi==0.115.0
-uvicorn[standard]==0.31.0
+# Updated for Render Build Fix - v2
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
 sqlalchemy==2.0.25
-pydantic==2.10.0
-pydantic-settings==2.7.0
+pydantic==2.10.6
+pydantic-settings==2.7.1
 python-jose[cryptography]==3.3.0
 passlib[bcrypt]==1.7.4
 bcrypt==4.2.1
 python-multipart==0.0.6
 aiofiles==23.2.1
-pillow==11.0.0
+pillow==11.1.0
 python-slugify==8.0.1
 httpx==0.26.0
 alembic==1.13.1
 email-validator==2.1.0.post1
 python-dotenv==1.0.1
+psycopg2-binary==2.9.10
