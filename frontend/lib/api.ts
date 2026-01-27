@@ -1,4 +1,14 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+let apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+
+// Remove trailing slash if present
+apiUrl = apiUrl.replace(/\/$/, '');
+
+// Ensure the URL ends with /api
+if (!apiUrl.endsWith('/api')) {
+    apiUrl += '/api';
+}
+
+const API_URL = apiUrl;
 
 interface FetchOptions extends RequestInit {
     token?: string;
