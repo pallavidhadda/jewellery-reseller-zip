@@ -56,13 +56,16 @@ We will start with the backend because the frontend will need its URL to connect
 
 ### Step 2: Configure the Project
 
-1.  Vercel will pre-fill most settings correctly. Expand the **"Environment Variables"** section.
-2.  Add the following environment variable:
+1.  Vercel will pre-fill most settings. **It is critical that you set the Root Directory.**
+2.  Expand the **"Build & Development Settings"** section.
+3.  Set the **"Root Directory"** to `frontend`. Vercel will now correctly find your Next.js application and the `package.json` file within it.
+4.  Now, expand the **"Environment Variables"** section.
+5.  Add the following environment variable:
     *   **Name**: `NEXT_PUBLIC_API_BASE_URL`
     *   **Value**: Paste the URL of your **deployed Render backend** from Part 1, Step 7.
 
-3.  Click **"Deploy"**.
-4.  Vercel will build and deploy your frontend. This is usually very fast.
+6.  Click **"Deploy"**.
+7.  Vercel will build and deploy your frontend. This is usually very fast.
 
 ---
 
