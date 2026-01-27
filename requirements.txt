@@ -1,4 +1,17 @@
-# Jewelry Reseller Platform - Root Requirements
-# To install backend dependencies, run: pip install -r backend/requirements.txt
-
--r backend/requirements.txt
+# Jewelry Reseller Platform - Requirements
+fastapi==0.115.0
+uvicorn[standard]==0.31.0
+sqlalchemy==2.0.25
+pydantic==2.10.0
+pydantic-settings==2.7.0
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+bcrypt==4.2.1
+python-multipart==0.0.6
+aiofiles==23.2.1
+pillow==11.0.0
+python-slugify==8.0.1
+httpx==0.26.0
+alembic==1.13.1
+email-validator==2.1.0.post1
+python-dotenv==1.0.1
