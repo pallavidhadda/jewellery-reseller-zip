@@ -219,11 +219,11 @@ async def publish_store(
         ResellerProduct.is_active == True
     ).count()
     
-    if product_count == 0:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Add at least one product before publishing"
-        )
+   # if product_count == 0:
+   #     raise HTTPException(
+   #         status_code=status.HTTP_400_BAD_REQUEST,
+   #         detail="Add at least one product before publishing"
+   #     )
     
     reseller.is_published = True
     reseller.is_onboarded = True
@@ -437,3 +437,4 @@ async def complete_onboarding(
     db.refresh(reseller)
     clear_storefront_cache(reseller.slug)
     return reseller
+
