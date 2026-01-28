@@ -58,11 +58,20 @@ We will start with the backend because the frontend will need its URL to connect
 
 1.  Vercel will pre-fill most settings correctly. Expand the **"Environment Variables"** section.
 2.  Add the following environment variable:
-    *   **Name**: `NEXT_PUBLIC_API_BASE_URL`
-    *   **Value**: Paste the URL of your **deployed Render backend** from Part 1, Step 7.
+    *   **Name**: `NEXT_PUBLIC_API_URL`
+    *   **Value**: Paste the URL of your **deployed Render backend** from Part 1, Step 7 (e.g., `https://jewelry-backend.onrender.com/api`). **Note:** Make sure to include the `/api` suffix if not already present.
 
 3.  Click **"Deploy"**.
-4.  Vercel will build and deploy your frontend. This is usually very fast.
+
+### Step 3: Automatic Database Seeding
+
+The backend is configured to automatically seed the database on its first launch. You do **not** need to manually run any seed scripts.
+1.  Once the backend is deployed on Render, it will initialize the database tables and populate them with sample jewelry, an admin account, and a demo reseller account.
+2.  You can verify this by checking the logs of your Render Web Service. You should see `[OK] Auto-seeding check complete`.
+
+### Step 4: Finalize Frontend Deployment
+
+1.  Vercel will build and deploy your frontend. This is usually very fast.
 
 ---
 

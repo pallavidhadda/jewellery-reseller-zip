@@ -89,6 +89,15 @@ async def startup():
     # Initialize database
     init_db()
     print("[OK] Database initialized")
+
+    # Auto-seed database if empty
+    try:
+        from seed_data import seed_database
+        seed_database()
+        print("[OK] Auto-seeding check complete")
+    except Exception as e:
+        print(f"[ERROR] Auto-seeding failed: {e}")
+
     print("Jewelry Reseller Platform API is running!")
 
 # Shutdown event

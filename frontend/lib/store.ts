@@ -49,7 +49,12 @@ export const useAuthStore = create<AuthState>()(
             setUser: (user) => set({ user }),
             setReseller: (reseller) => set({ reseller }),
             setLoading: (isLoading) => set({ isLoading }),
-            logout: () => set({ token: null, user: null, reseller: null }),
+            logout: () => {
+                if (typeof window !== 'undefined') {
+                    localStorage.removeItem('token');
+                }
+                set({ token: null, user: null, reseller: null });
+            },
         }),
         {
             name: 'auth-storage',

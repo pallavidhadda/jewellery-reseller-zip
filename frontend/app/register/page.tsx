@@ -109,6 +109,7 @@ export default function RegisterPage() {
                                         onChange={(e) => setEmail(e.target.value)}
                                         className="input"
                                         placeholder="you@example.com"
+                                        autoComplete="email"
                                         required
                                     />
                                 </div>
@@ -122,6 +123,7 @@ export default function RegisterPage() {
                                             onChange={(e) => setPassword(e.target.value)}
                                             className="input pr-14"
                                             placeholder="Min. 8 characters"
+                                            autoComplete="new-password"
                                             required
                                             minLength={8}
                                         />
@@ -144,6 +146,7 @@ export default function RegisterPage() {
                                             onChange={(e) => setConfirmPassword(e.target.value)}
                                             className="input pr-14"
                                             placeholder="••••••••"
+                                            autoComplete="new-password"
                                             required
                                         />
                                         <button

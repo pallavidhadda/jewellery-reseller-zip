@@ -10,6 +10,8 @@ if (!apiUrl.endsWith('/api')) {
 
 const API_URL = apiUrl;
 
+export const isValidToken = (t: any) => t && t !== 'null' && t !== 'undefined';
+
 interface FetchOptions extends RequestInit {
     token?: string;
 }
@@ -29,12 +31,12 @@ class ApiClient {
             ...options.headers,
         };
 
-        if (token) {
+        if (isValidToken(token)) {
             headers['Authorization'] = `Bearer ${token}`;
         } else {
             // Try to get token from localStorage
             const storedToken = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-            if (storedToken) {
+            if (isValidToken(storedToken)) {
                 headers['Authorization'] = `Bearer ${storedToken}`;
             }
         }
@@ -45,6 +47,15 @@ class ApiClient {
         });
 
         if (!response.ok) {
+            // Handle 401 Unauthorized errors globally
+            if (response.status === 401 && !endpoint.includes('/auth/login')) {
+                if (typeof window !== 'undefined') {
+                    localStorage.removeItem('token');
+                    // We don't use router.push here because we're not in a component
+                    window.location.href = '/login';
+                }
+            }
+
             const error = await response.json().catch(() => ({ detail: 'An error occurred' }));
 
             // Handle FastAPI validation errors (422)
@@ -107,12 +118,15 @@ class ApiClient {
         formData.append('file', file);
 
         const token = localStorage.getItem('token');
+        const headers: any = {};
+        if (token && token !== 'null' && token !== 'undefined') {
+            headers['Authorization'] = `Bearer ${token}`;
+        }
+
         const response = await fetch(`${this.baseUrl}/resellers/logo`, {
             method: 'POST',
             body: formData,
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
+            headers
         });
 
         if (!response.ok) {
@@ -128,12 +142,15 @@ class ApiClient {
         formData.append('file', file);
 
         const token = localStorage.getItem('token');
+        const headers: any = {};
+        if (token && token !== 'null' && token !== 'undefined') {
+            headers['Authorization'] = `Bearer ${token}`;
+        }
+
         const response = await fetch(`${this.baseUrl}/resellers/banner`, {
             method: 'POST',
             body: formData,
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
+            headers
         });
 
         if (!response.ok) {
@@ -290,6 +307,16 @@ class ApiClient {
             method: 'POST',
             body: JSON.stringify(orderData),
         });
+    }
+
+    // Admin
+    async getAdminDashboard() {
+        return this.request('/admin/dashboard');
+    }
+
+    // Storefront Categories
+    async getStorefrontCategories(slug: string) {
+        return this.request<string[]>(`/store/${slug}/categories`);
     }
 }
 
