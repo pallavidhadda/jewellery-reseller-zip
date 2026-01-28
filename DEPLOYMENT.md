@@ -70,7 +70,8 @@ To use the demo credentials and see products, you must seed your database:
 2.  Go to the **"Shell"** tab.
 3.  Run the following command: `python seed_data.py`
 4.  This will populate your database with sample jewelry, an admin account, and a demo reseller account.
-4.  Vercel will build and deploy your frontend. This is usually very fast.
+
+5.  Vercel will build and deploy your frontend. This is usually very fast.
 
 ---
 

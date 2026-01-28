@@ -107,11 +107,8 @@ export default function StorefrontPage() {
 
             // Load categories - handle potential API failure gracefully
             try {
-                const catsResponse = await fetch(`/api/store/${slug}/categories`);
-                if (catsResponse.ok) {
-                    const cats = await catsResponse.json();
-                    setCategories(cats);
-                }
+                const cats = await api.getStorefrontCategories(slug);
+                setCategories(cats);
             } catch (e) {
                 console.warn('Failed to load categories');
             }
@@ -218,4 +215,3 @@ export default function StorefrontPage() {
 function Link({ children, href, className }: any) {
     return <a href={href} className={className}>{children}</a>;
 }
-

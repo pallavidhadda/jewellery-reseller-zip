@@ -10,6 +10,7 @@ import {
     Clock, ArrowRight, Gem
 } from 'lucide-react';
 import { useAuthStore } from '@/lib/store';
+import api from '@/lib/api';
 
 interface AdminStats {
     resellers: { total: number; active: number; new_this_month: number };
@@ -39,21 +40,8 @@ export default function AdminPage() {
 
     const loadStats = async () => {
         try {
-            const token = localStorage.getItem('token');
-            const response = await fetch('/api/admin/dashboard', {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-
-            if (!response.ok) {
-                if (response.status === 403) {
-                    setError('Admin access required. Please login with an admin account.');
-                    return;
-                }
-                throw new Error('Failed to load stats');
-            }
-
-            const data = await response.json();
-            setStats(data);
+            const data = await api.getAdminDashboard();
+            setStats(data as AdminStats);
         } catch (err: any) {
             setError(err.message || 'Failed to load dashboard');
         } finally {
@@ -303,4 +291,3 @@ export default function AdminPage() {
         </div>
     );
 }
-

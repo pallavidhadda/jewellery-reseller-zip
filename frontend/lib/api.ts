@@ -308,6 +308,16 @@ class ApiClient {
             body: JSON.stringify(orderData),
         });
     }
+
+    // Admin
+    async getAdminDashboard() {
+        return this.request('/admin/dashboard');
+    }
+
+    // Storefront Categories
+    async getStorefrontCategories(slug: string) {
+        return this.request<string[]>(`/store/${slug}/categories`);
+    }
 }
 
 export const api = new ApiClient(API_URL);
