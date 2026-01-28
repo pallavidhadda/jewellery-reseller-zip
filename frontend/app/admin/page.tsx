@@ -30,7 +30,7 @@ export default function AdminPage() {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        if (!token) {
+        if (!token || token === 'null' || token === 'undefined') {
             router.push('/login');
             return;
         }

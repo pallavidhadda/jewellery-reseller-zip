@@ -3,6 +3,13 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from datetime import datetime, timedelta
 from jose import JWTError, jwt
+# Monkeypatch for passlib compatibility with bcrypt 4.x
+try:
+    import bcrypt
+    if not hasattr(bcrypt, "__about__"):
+        bcrypt.__about__ = bcrypt
+except ImportError:
+    pass
 from passlib.context import CryptContext
 from typing import Optional
 import secrets

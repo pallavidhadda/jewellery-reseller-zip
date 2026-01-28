@@ -42,7 +42,7 @@ export default function OrdersPage() {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        if (!token) {
+        if (!token || token === 'null' || token === 'undefined') {
             router.push('/login');
             return;
         }
