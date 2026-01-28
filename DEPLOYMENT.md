@@ -63,15 +63,15 @@ We will start with the backend because the frontend will need its URL to connect
 
 3.  Click **"Deploy"**.
 
-### Step 3: Seed the Database (Important!)
+### Step 3: Automatic Database Seeding
 
-To use the demo credentials and see products, you must seed your database:
-1.  In your Render dashboard, find your Web Service.
-2.  Go to the **"Shell"** tab.
-3.  Run the following command: `python seed_data.py`
-4.  This will populate your database with sample jewelry, an admin account, and a demo reseller account.
+The backend is configured to automatically seed the database on its first launch. You do **not** need to manually run any seed scripts.
+1.  Once the backend is deployed on Render, it will initialize the database tables and populate them with sample jewelry, an admin account, and a demo reseller account.
+2.  You can verify this by checking the logs of your Render Web Service. You should see `[OK] Auto-seeding check complete`.
 
-5.  Vercel will build and deploy your frontend. This is usually very fast.
+### Step 4: Finalize Frontend Deployment
+
+1.  Vercel will build and deploy your frontend. This is usually very fast.
 
 ---
 
